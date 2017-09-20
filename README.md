@@ -1,6 +1,7 @@
 About
 =
-xm_zoomeye_upgradeserver, automic generate firmware update dirs with back-stag management.
+xm_zoomeye_upgradeserver, automic generate,update firmware dirs with back-stag management and percise area or uuid 
+control during device firmware upgrade.
 
 
 Base docker image
