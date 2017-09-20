@@ -13,7 +13,7 @@ COPY nginx.conf /etc/nginx/conf/
 # install envirment
 RUN yum -y install epel-release
 RUN yum -y install python-devel python-pip
-RUN pip install -r /xm_workspace/xmcloud3.0/upgradeserver_lua/requements.txt
+RUN pip install -r /xm_workspace/xmcloud3.0/upgradeserver_lua/requirements.txt
 
 # make log dirs
 RUN mkdir -p /xm_workspace/xmcloud3.0/upgradeserver_lua/logs/nginx
