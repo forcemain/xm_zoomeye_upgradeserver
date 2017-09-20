@@ -129,7 +129,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'upgradeserver_lua', 'static')
 
 # Logging settings
 DLOGGER = 'upgradeserver'
-DJANGO_LOG_LEVEL = logging.DEBUG
+DJANGO_LOG_LEVEL = logging.INFO
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
