@@ -211,8 +211,8 @@ def auto_generate_dirs():
 
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(update_idmap_cache, 'interval', seconds=1)
-scheduler.add_job(update_version_cache, 'interval', seconds=1)
-scheduler.add_job(auto_generate_dirs, 'interval', seconds=1)
+scheduler.add_job(update_idmap_cache, 'interval', minutes=5)
+scheduler.add_job(update_version_cache, 'interval', seconds=5)
+scheduler.add_job(auto_generate_dirs, 'interval', seconds=5)
 
 scheduler.start()
