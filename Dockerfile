@@ -11,7 +11,8 @@ COPY upgradeserver_lua /xm_workspace/xmcloud3.0/upgradeserver_lua/
 COPY nginx.conf /usr/local/openrestry/nginx/conf/
 
 # install envirment
-RUN yum -y install epel-release python-devel python-pip
+RUN yum -y install epel-release
+RUN yum -y install python-devel python-pip
 RUN pip install -r /xm_workspace/xmcloud3.0/upgradeserver_lua/requements.txt
 
 # make log dirs
