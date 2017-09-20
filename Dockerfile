@@ -14,6 +14,7 @@ COPY nginx.conf /etc/nginx/conf/
 RUN yum -y install epel-release
 RUN yum -y install python-devel python-pip
 RUN pip install -r /xm_workspace/xmcloud3.0/upgradeserver_lua/requirements.txt
+RUN pip install https://github.com/darklow/django-suit/tarball/v2
 
 # make log dirs
 RUN mkdir -p /xm_workspace/xmcloud3.0/upgradeserver_lua/logs/nginx
