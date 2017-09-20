@@ -8,7 +8,7 @@ COPY geoip.mmdb /xm_workspace/xmcloud3.0/upgradeserver_lua/
 COPY manage.py /xm_workspace/xmcloud3.0/upgradeserver_lua/
 COPY requirements.txt /xm_workspace/xmcloud3.0/upgradeserver_lua/
 COPY upgradeserver_lua /xm_workspace/xmcloud3.0/upgradeserver_lua/upgradeserver_lua
-COPY nginx.conf /etc/nginx/conf/
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # install envirment
 RUN yum -y install epel-release
