@@ -33,7 +33,7 @@ Django == 1.11.5
 chardet == 3.0.4
 
 # upgradeserver_lua/apps.py: 9
-django_suit == 2.0a1
+# django_suit == 2.0a1
 
 # upgradeserver_lua/geoip.py: 9
 geoip2 == 2.5.0
