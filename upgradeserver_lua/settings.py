@@ -118,7 +118,7 @@ USE_TZ = False
 
 
 # GeoIP settings
-GEOIP_PATH = '/Users/manmanli/xm-webs/django_stack/upgradeserver_lua'
+GEOIP_PATH = BASE_DIR
 GEOIP_CITY = 'geoip.mmdb'
 
 
@@ -159,9 +159,9 @@ LOGGING = {
 
 # Upgrade settings
 # - not used
-VENDER_NAME = os.getenv('vender_name', 'General')
-REDIS_CENTER = os.getenv('vender_name', '120.132.71.215')
-SERVER_AREA = os.getenv('China:China:Beijing', '120.132.71.215')
+VENDOR_NAME = os.getenv('VendorName', None)
+REDIS_CENTER = os.getenv('RedisCenter', None)
+SERVER_AREA = os.getenv('ServerArea', None)
 # - used
 UPGRADE_PATH = os.path.join(BASE_DIR, 'upgradeserver_lua', 'upgrade_files')
 
