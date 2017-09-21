@@ -26,4 +26,4 @@ COPY supervisord.conf /etc/supervisord.conf
 # run settings
 WORKDIR /xm_workspace/xmcloud3.0/upgradeserver_lua/
 EXPOSE 8083
-CMD ["supervisord"]
+CMD ["supervisord -c /etc/supervisord.conf"]
