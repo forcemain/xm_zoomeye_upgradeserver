@@ -40,3 +40,6 @@ geoip2 == 2.5.0
 
 # uwsgi
 uwsgi == 2.0.15
+
+# uwsgitop
+uwsgitop == 0.10
