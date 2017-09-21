@@ -10,9 +10,9 @@ import json
 from .wraps import upg_control
 from .models import IdMapCache, VersionCache
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
+from django.shortcuts import get_object_or_404
 from .utils import analysis_download_body, get_extend_id, find_version, dlog
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 
 
 @upg_control
@@ -48,7 +48,9 @@ def download(request):
         '/download_file/', req_body['DevID'],
         req_body['Date'], req_body['FileName']
     )
-    return redirect(f_path)
+    response = HttpResponse()
+    response['X-Accel-Redirect'] = f_path
+    return response
 
 
 def firmware_list(request):
