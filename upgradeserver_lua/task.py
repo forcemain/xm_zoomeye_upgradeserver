@@ -179,7 +179,7 @@ def update_idmap_cache():
         if not idmap:
             return None, '{0} is empty'.format(idmap_file)
 
-    settings.IDMAPS_DICT = idmap
+        settings.IDMAPS_DICT = idmap
 
 
 def update_version_cache():
