@@ -6,7 +6,7 @@
 
 
 from django.contrib import admin
-from .models import VersionCache, IdMapCache, AreaControl, UuidControl, Firmware
+from .models import AreaControl, UuidControl, Firmware
 
 
 class UuidControlAdmin(admin.ModelAdmin):
@@ -36,5 +36,3 @@ class FirmwareAdmin(admin.ModelAdmin):
 admin.site.register(UuidControl, UuidControlAdmin)
 admin.site.register(AreaControl, AreaControlAdmin)
 admin.site.register(Firmware, FirmwareAdmin)
-admin.site.register(VersionCache)
-admin.site.register(IdMapCache)
