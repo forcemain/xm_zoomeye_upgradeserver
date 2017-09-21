@@ -9,7 +9,6 @@ import json
 from .geoip import g_ip
 from django.conf import settings
 from django.utils import timezone
-from .models import AreaControl, UuidControl
 from .utils import analysis_list_body, get_extend_id, dlog
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 
@@ -32,31 +31,33 @@ def area_can(area):
         area_key = ':'.join(area_list[:k]) if k > 1 else v
         areas.append(area_key)
 
-    area_objs = AreaControl.objects
-    if area_objs.count() == 0:
+    if not settings.AREASCTL_DICT:
         return True, 0
-    area_arrs = area_objs.filter(area__in=areas)
-    if not area_arrs:
+
+    area_val = None
+    for area_key in areas:
+        area_val = settings.AREASCTL_DICT.get(area_key, None)
+        if area_val is not None:
+            break
+    if area_val is None:
         return False, 0
-    area = area_arrs[0]
     time = timezone.now()
-    if (area.start_time and time < area.start_time) or (area.end_time and time > area.end_time):
+    if (area_val['start_time'] and time < area_val['start_time']) or \
+       (area_val['end_time'] and time > area_val['end_time']):
         return False, 1
     return True, 1
 
 
 def uuid_can(uuid, devid):
-    uuid_objs = UuidControl.objects
-    if uuid_objs.count() == 0:
+    if not settings.UUIDSCTL_DICT:
         return True, 0
-    devid_list = uuid_objs.filter(devid=devid)
-    if not devid_list:
+    if devid not in settings.UUIDSCTL_DICT:
         return True, 0
-    uuid_list = devid_list.filter(uuid=uuid)
-    if uuid_list:
-        uuid = uuid_list[0]
+    if uuid in settings.UUIDSCTL_DICT[devid]:
+        uuid_val = settings.UUIDSCTL_DICT[devid][uuid]
         time = timezone.now()
-        if (uuid.start_time and time < uuid.start_time) or (uuid.end_time and time > uuid.end_time):
+        if (uuid_val['start_time'] and time < uuid_val['start_time']) or \
+           (uuid_val['end_time'] and time > uuid_val['end_time']):
             return False, 1
         return True, 1
     else:

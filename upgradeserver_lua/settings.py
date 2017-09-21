@@ -173,5 +173,8 @@ MEDIA_URL = '/download_file/'
 
 # Shared memeory settings
 IDMAPS_DICT = {}
+AREASCTL_DICT = {}
+UUIDSCTL_DICT = {}
 VERSIONS_DICT = {}
+FIRMWARES_DICT = {}
 

@@ -15,6 +15,7 @@ from .models import Firmware
 from django.conf import settings
 from .utils import get_extend_id, dlog
 from apscheduler.schedulers.background import BackgroundScheduler
+from . import update_area_cache, update_uuid_cache, update_firmware_cache
 
 
 FIRMWARE_PATTERN = re.compile(r'''(?<=\.)(?P<date>[0-9]+)(?=\.bin)''')
@@ -85,44 +86,6 @@ def find_version(devid, root):
         return None, '{0} not date found'.format(devid_root)
 
     return latest, important
-
-
-def update_idmap_cache():
-    data = {}
-
-    idmap_file = os.path.join(settings.BASE_DIR, 'idmap.conf')
-    if not os.path.exists(idmap_file):
-        return None, '{0} not exists'.format(idmap_file)
-
-    with open(idmap_file) as fd:
-        try:
-            idmap = json.load(fd)
-        except ValueError as e:
-            return None, e
-        if not idmap:
-            return None, '{0} is empty'.format(idmap_file)
-        for k, v in idmap.iteritems():
-            key, val = '_'.join(('SrcID', k)), v
-            data[key] = val
-
-    settings.IDMAPS_DICT = data
-
-
-def update_version_cache():
-    data = {}
-    root = settings.UPGRADE_PATH
-    devid_pattern = re.compile(r'^[0-9A-Za-z]{24}$')
-    for d in os.listdir(root):
-        match = re.match(devid_pattern, d)
-        if not match:
-            continue
-        version = find_version(d, root)
-        if version[0] is None:
-            continue
-        key = '_'.join(('DevID', d))
-        data[key] = version
-
-    settings.VERSIONS_DICT = data
 
 
 def get_firmware_devid(path):
@@ -203,7 +166,47 @@ def auto_generate_dirs():
         firmware.update(is_generated=True)
 
 
+def update_idmap_cache():
+    idmap_file = os.path.join(settings.BASE_DIR, 'idmap.conf')
+    if not os.path.exists(idmap_file):
+        return None, '{0} not exists'.format(idmap_file)
+
+    with open(idmap_file) as fd:
+        try:
+            idmap = json.load(fd)
+        except ValueError as e:
+            return None, e
+        if not idmap:
+            return None, '{0} is empty'.format(idmap_file)
+
+    settings.IDMAPS_DICT = idmap
+
+
+def update_version_cache():
+    data = {}
+    root = settings.UPGRADE_PATH
+    devid_pattern = re.compile(r'^[0-9A-Za-z]{24}$')
+    for d in os.listdir(root):
+        match = re.match(devid_pattern, d)
+        if not match:
+            continue
+        version = find_version(d, root)
+        if version[0] is None:
+            continue
+        key = '_'.join(('DevID', d))
+        data[key] = version
+
+    settings.VERSIONS_DICT = data
+
+
+def update_database_cache():
+    update_area_cache()
+    update_uuid_cache()
+    update_firmware_cache()
+
+
 scheduler = BackgroundScheduler()
+scheduler.add_job(update_database_cache)
 scheduler.add_job(update_idmap_cache, 'interval', minutes=5)
 scheduler.add_job(update_version_cache, 'interval', seconds=5)
 scheduler.add_job(auto_generate_dirs, 'interval', seconds=5)
