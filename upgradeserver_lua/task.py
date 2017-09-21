@@ -168,7 +168,7 @@ def auto_generate_dirs():
         if not (stat.S_ISREG(f_mode) and f.endswith('.bin')):
             continue
 
-        firmware = Firmware.objects.select_for_update().filter(name=f)
+        firmware = Firmware.objects.filter(name=f)
         fdate_res = get_firmware_date(f)
         if fdate_res[0] is None:
             dlog.error('{0}, {1}'.format(f, fdate_res[1]))
