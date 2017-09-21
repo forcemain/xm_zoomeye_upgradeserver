@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '+_rkn^ep)@m8#jm1q*hpq%hz$+ke*l6v^bkwqgo(w2j@dd21bl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -129,7 +129,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'upgradeserver_lua', 'static')
 
 # Logging settings
 DLOGGER = 'upgradeserver'
-DJANGO_LOG_LEVEL = logging.getLevelName(logging.ERROR)
+DJANGO_LOG_LEVEL = logging.getLevelName(logging.DEBUG)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -171,4 +171,7 @@ MEDIA_ROOT = UPGRADE_PATH
 MEDIA_URL = '/download_file/'
 
 
+# Shared memeory settings
+IDMAPS_DICT = {}
+VERSIONS_DICT = {}
 

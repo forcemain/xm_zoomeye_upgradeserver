@@ -307,20 +307,6 @@ AREA_CHOICE = [
 ]
 
 
-class VersionCache(models.Model):
-    data = models.TextField(u'版本信息')
-
-    def __str__(self):
-        return self.data
-
-
-class IdMapCache(models.Model):
-    data = models.TextField(u'映射信息')
-
-    def __str__(self):
-        return self.data
-
-
 class Control(object):
     def is_expired(self):
         time = timezone.now()

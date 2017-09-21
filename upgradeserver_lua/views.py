@@ -8,11 +8,10 @@
 import os
 import json
 from .wraps import upg_control
-from .models import IdMapCache, VersionCache
+from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import get_object_or_404
-from .utils import analysis_download_body, get_extend_id, find_version, dlog
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
+from .utils import analysis_download_body, find_version, dlog
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseServerError
 
 
 @upg_control
@@ -22,13 +21,11 @@ def list(request, req_body=None, devid=None):
     language = req_body['Language']
     level = 1 if req_body['Expect'] == 'Important' else 0
     # for version
-    try:
-        versions_ins = VersionCache.objects.get(pk=1)
-    except VersionCache.DoesNotExist:
-        dlog.error('versions not ready')
-        return HttpResponseServerError('versions not ready')
-    versions = json.loads(versions_ins.data)
-    version = find_version(versions, devid, cur_version, level, language)
+    if not settings.IDMAPS_DICT:
+        msg = 'versions not ready'
+        dlog.error(msg)
+        return HttpResponseServerError(msg)
+    version = find_version(settings.VERSIONS_DICT, devid, cur_version, level, language)
     if version[0] is None:
         dlog.error(version[1])
         return HttpResponse(version[1], status=204)
@@ -54,25 +51,6 @@ def download(request):
 
 
 def firmware_list(request):
-    data = {}
-    versions_ins = get_object_or_404(VersionCache, pk=1)
-    versions = json.loads(versions_ins.data)
-
-    data.update({'versions': versions})
-
-    return HttpResponse(json.dumps(data))
-
-
-def firmware_dates(request, devid):
-    data = {}
-    versions_ins = get_object_or_404(VersionCache, pk=1)
-    versions = json.loads(versions_ins.data)
-
-    key = '_'.join(('DevID', devid))
-    data.update({'versions': {devid: versions[key]} if key in versions else {}})
-
-    return HttpResponse(json.dumps(data))
-
-
-def firmware_detail(request, devid, date):
-    return HttpResponse('ok')
+    if not settings.VERSIONS_DICT:
+        return HttpResponseNotFound('versions not ready')
+    return HttpResponse(json.dumps({'versions': settings.VERSIONS_DICT}))

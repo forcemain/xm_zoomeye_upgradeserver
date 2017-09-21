@@ -33,7 +33,6 @@ def uuid2devid(uuid):
     match = re.match(id_pattern, uuid)
     if not match:
         return None, '{0} invalid device uuid'.format(uuid)
-    devid = ''
     if uuid[5] < '5':
         devid = ''.join([uuid[:8], 'X'*11,
                          uuid[19:]])

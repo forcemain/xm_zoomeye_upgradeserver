@@ -11,9 +11,9 @@ import json
 import stat
 import zipfile
 import shutil
+from .models import Firmware
 from django.conf import settings
 from .utils import get_extend_id, dlog
-from .models import VersionCache, IdMapCache, Firmware
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
@@ -105,9 +105,7 @@ def update_idmap_cache():
             key, val = '_'.join(('SrcID', k)), v
             data[key] = val
 
-    ins = IdMapCache.objects.get_or_create(pk=1)
-    ins[0].data = json.dumps(data)
-    ins[0].save()
+    settings.IDMAPS_DICT = data
 
 
 def update_version_cache():
@@ -124,9 +122,7 @@ def update_version_cache():
         key = '_'.join(('DevID', d))
         data[key] = version
 
-    ins = VersionCache.objects.get_or_create(pk=1)
-    ins[0].data = json.dumps(data)
-    ins[0].save()
+    settings.VERSIONS_DICT = data
 
 
 def get_firmware_devid(path):
@@ -146,12 +142,9 @@ def get_firmware_devid(path):
                 break
     if srcid is None:
         return srcid, 'no devid in InstallDesc'
-    try:
-        idmap_ins = IdMapCache.objects.get(pk=1)
-    except IdMapCache.DoesNotExist:
+    if not settings.IDMAPS_DICT:
         return None, 'idmap not ready'
-    idmap = json.loads(idmap_ins.data)
-    extend_id = get_extend_id(srcid, idmap)
+    extend_id = get_extend_id(srcid, settings.IDMAPS_DICT)
     if extend_id[0] is None:
         return extend_id
     devid = extend_id[0]

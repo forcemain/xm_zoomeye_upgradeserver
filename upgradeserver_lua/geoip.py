@@ -88,5 +88,6 @@ class GeoIP2(geoip2.GeoIP2):
         return result
 
 
+g_ip = GeoIP2()
 
 

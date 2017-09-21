@@ -6,14 +6,12 @@
 
 
 import json
-from .geoip import GeoIP2
+from .geoip import g_ip
+from django.conf import settings
 from django.utils import timezone
+from .models import AreaControl, UuidControl
 from .utils import analysis_list_body, get_extend_id, dlog
-from .models import AreaControl, UuidControl, IdMapCache
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
-
-
-g_ip = GeoIP2()
 
 
 def get_client_ip(request):
@@ -74,13 +72,11 @@ def upg_control(func):
             return HttpResponseBadRequest(req_body_res[1])
         req_body = req_body_res[0]
         # 获取最终的devid
-        try:
-            idmap_ins = IdMapCache.objects.get(pk=1)
-        except IdMapCache.DoesNotExist:
-            dlog.error('idmap not ready')
-            return HttpResponseServerError('idmap not ready')
-        idmap = json.loads(idmap_ins.data)
-        extend_id = get_extend_id(req_body['DevID'], idmap)
+        if not settings.IDMAPS_DICT:
+            msg = 'idmap not ready'
+            dlog.error(msg)
+            return HttpResponseServerError(msg)
+        extend_id = get_extend_id(req_body['DevID'], settings.IDMAPS_DICT)
         if extend_id[0] is None:
             dlog.error(extend_id[1])
             return HttpResponseBadRequest(extend_id[1])
