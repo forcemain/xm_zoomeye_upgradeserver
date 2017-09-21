@@ -14,23 +14,28 @@ from .utils import analysis_download_body, find_version, dlog
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseServerError
 
 
-@upg_control
 @csrf_exempt
-def list(request, req_body=None, devid=None):
-    cur_version = req_body['CurVersion']
-    language = req_body['Language']
-    level = 1 if req_body['Expect'] == 'Important' else 0
-    # for version
-    if not settings.IDMAPS_DICT:
-        msg = 'versions not ready'
-        dlog.error(msg)
-        return HttpResponseServerError(msg)
-    version = find_version(settings.VERSIONS_DICT, devid, cur_version, level, language)
-    if version[0] is None:
-        dlog.error(version[1])
-        return HttpResponse(version[1], status=204)
+def list(request):
+    return HttpResponse(status=204)
 
-    return HttpResponse(json.dumps(version[0]))
+
+# @upg_control
+# @csrf_exempt
+# def list(request, req_body=None, devid=None):
+#     cur_version = req_body['CurVersion']
+#     language = req_body['Language']
+#     level = 1 if req_body['Expect'] == 'Important' else 0
+#     # for version
+#     if not settings.IDMAPS_DICT:
+#         msg = 'versions not ready'
+#         dlog.error(msg)
+#         return HttpResponseServerError(msg)
+#     version = find_version(settings.VERSIONS_DICT, devid, cur_version, level, language)
+#     if version[0] is None:
+#         dlog.error(version[1])
+#         return HttpResponse(version[1], status=204)
+#
+#     return HttpResponse(json.dumps(version[0]))
 
 
 @csrf_exempt
