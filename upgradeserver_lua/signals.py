@@ -44,3 +44,4 @@ def update_memory_cache(sender, **kwargs):
 
 post_save.connect(update_memory_cache)
 post_delete.connect(update_memory_cache)
+
