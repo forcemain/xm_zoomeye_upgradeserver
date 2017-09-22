@@ -38,8 +38,8 @@ chardet == 3.0.4
 # upgradeserver_lua/geoip.py: 9
 geoip2 == 2.5.0
 
-# uwsgi
-uwsgi == 2.0.15
+# gunicorn
+gunicorn == 19.7.1
 
-# uwsgitop
-uwsgitop == 0.10
+# gevent
+gevent == 1.2.2
