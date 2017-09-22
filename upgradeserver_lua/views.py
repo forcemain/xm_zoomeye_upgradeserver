@@ -50,7 +50,7 @@ def list(request):
             msg = '{0} not in geoip mmdb'.format(clientip)
             dlog.warn(msg)
     level = 1 if req_body['Expect'] == 'Important' else 0
-    return HttpResponse('==========================', status=204)
+    return HttpResponse('===========================', status=204)
     version = find_version(settings.VERSIONS_DICT, devid, req_body['CurVersion'], level, req_body['Language'])
     if version[0] is None:
         dlog.error(version[1])
