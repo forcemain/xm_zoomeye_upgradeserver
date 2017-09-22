@@ -174,5 +174,5 @@ def uuid_can(uuid, devid):
 
 
 def dj_logging(msg):
-    fmt = '=> upgradeserver_lua: {0}{1}'.format(msg, os.linesep)
-    sys.stderr.write(msg % fmt)
+    log = '=> upgradeserver_lua: {0}{1}'.format(msg, os.linesep)
+    sys.stderr.write(log)
