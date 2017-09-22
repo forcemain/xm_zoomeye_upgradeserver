@@ -141,7 +141,7 @@ LOGGING = {
         'null': {
             'level': 'DEBUG',
             'formatter': 'console',
-            'class': 'django.utils.log.NullHandler'
+            'class': 'logging.NullHandler'
         },
         'console': {
             'level': 'WARN',
