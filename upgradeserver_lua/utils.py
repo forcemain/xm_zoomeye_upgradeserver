@@ -48,32 +48,16 @@ def uuid2devid(uuid):
 def analysis_list_body(data):
     try:
         req_body = json.loads(data)
-    except ValueError as e:
+    except ValueError:
         return None, 'request body {0} is not a json'.format(data)
 
     if 'UUID' not in req_body or \
-        not isinstance(req_body['UUID'], (str, unicode)) or \
-            len(req_body['UUID']) == 0 or \
-            len(req_body['UUID']) > 64 or \
-            'DevID' not in req_body or \
-            not isinstance(req_body['DevID'], (str, unicode)) or \
-            len(req_body['DevID']) == 0 or \
-            len(req_body['DevID']) > 64 or \
-            'DevType' not in req_body or \
-            not isinstance(req_body['DevType'], (str, unicode)) or \
-            len(req_body['DevType']) == 0 or \
-            'CurVersion' not in req_body or \
-            not isinstance(req_body['CurVersion'], (str, unicode)) or \
-            len(req_body['CurVersion']) != 10 or \
-            'Expect' not in req_body or \
-            not isinstance(req_body['Expect'], (str, unicode)) or \
-            len(req_body['Expect']) == 0 or \
-            'Language' not in req_body or \
-            not isinstance(req_body['Language'], (str, unicode)) or \
-            len(req_body['Language']) == 0 or \
-            'Manual' not in req_body or \
-            not isinstance(req_body['Manual'], (str, unicode)) or \
-            len(req_body['Manual']) == 0:
+       'DevID' not in req_body or \
+       'DevType' not in req_body or \
+       'CurVersion' not in req_body or \
+       'Expect' not in req_body or \
+       'Language' not in req_body or \
+       'Manual' not in req_body:
 
         return None, '{0} is a invalid message'.format(data)
 
@@ -83,26 +67,14 @@ def analysis_list_body(data):
 def analysis_download_body(data):
     try:
         req_body = json.loads(data)
-    except ValueError as e:
+    except ValueError:
         return None, 'request body {0} is not a json'.format(data)
 
     if 'UUID' not in req_body or \
-            not isinstance(req_body['UUID'], (str, unicode)) or \
-            len(req_body['UUID']) == 0 or \
-            len(req_body['UUID']) > 64 or \
-            'DevID' not in req_body or \
-            not isinstance(req_body['DevID'], (str, unicode)) or \
-            len(req_body['DevID']) == 0 or \
-            len(req_body['DevID']) > 64 or \
-            'FileName' not in req_body or \
-            not isinstance(req_body['FileName'], (str, unicode)) or \
-            len(req_body['FileName']) == 0 or \
-            'Date' not in req_body or \
-            not isinstance(req_body['Date'], (str, unicode)) or \
-            len(req_body['Date']) != 10 or \
-            'Manual' not in req_body or \
-            not isinstance(req_body['Manual'], (str, unicode)) or \
-            len(req_body['Manual']) == 0:
+       'DevID' not in req_body or \
+       'FileName' not in req_body or \
+       'Date' not in req_body or \
+       'Manual' not in req_body:
 
         return None, '{0} is a invalid message'.format(data)
 
