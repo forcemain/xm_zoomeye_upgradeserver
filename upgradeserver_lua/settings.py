@@ -128,7 +128,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'upgradeserver_lua', 'static')
 
 # Logging settings
-DLOGGER = 'upgradeserver'
+DLOGGER = 'django.upgradeserver'
 DJANGO_LOG_LEVEL = logging.getLevelName(logging.DEBUG)
 LOGGING = {
     'version': 1,
