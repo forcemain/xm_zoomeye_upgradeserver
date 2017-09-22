@@ -11,6 +11,7 @@ import json
 import chardet
 from logging import getLogger
 from django.conf import settings
+from django.utils import timezone
 
 
 dlog = getLogger(settings.DLOGGER)
@@ -153,3 +154,54 @@ def find_version(versions, devid, cur_version, level, language):
             latest['ChangeLog'] = ''
 
     return latest,
+
+
+def get_client_ip(request):
+    if 'HTTP_X_FORWARDED_FOR' in request.META:
+        ip = request.META['HTTP_X_FORWARDED_FOR']
+    elif 'REMOTE_ADDR' in request.META:
+        ip = request.META['REMOTE_ADDR']
+    else:
+        ip = None
+
+    return ip
+
+
+def area_can(area):
+    areas = []
+    area_list = area.split('_') if '_' in area else [area]
+    for k, v in enumerate(area_list, start=1):
+        area_key = ':'.join(area_list[:k]) if k > 1 else v
+        areas.append(area_key)
+
+    if not settings.AREASCTL_DICT:
+        return True, 0
+
+    area_val = None
+    for area_key in areas:
+        area_val = settings.AREASCTL_DICT.get(area_key, None)
+        if area_val is not None:
+            break
+    if area_val is None:
+        return False, 0
+    time = timezone.now()
+    if (area_val['start_time'] and time < area_val['start_time']) or \
+       (area_val['end_time'] and time > area_val['end_time']):
+        return False, 1
+    return True, 1
+
+
+def uuid_can(uuid, devid):
+    if not settings.UUIDSCTL_DICT:
+        return True, 0
+    if devid not in settings.UUIDSCTL_DICT:
+        return True, 0
+    if uuid in settings.UUIDSCTL_DICT[devid]:
+        uuid_val = settings.UUIDSCTL_DICT[devid][uuid]
+        time = timezone.now()
+        if (uuid_val['start_time'] and time < uuid_val['start_time']) or \
+           (uuid_val['end_time'] and time > uuid_val['end_time']):
+            return False, 1
+        return True, 1
+    else:
+        return False, 1
