@@ -67,12 +67,12 @@ class GeoIP2(geoip2.GeoIP2):
         result = None
         try:
             city_info = super(GeoIP2, self).city(query)
-        except (gaierror, GeoIP2Error) as e:
+        except (gaierror, GeoIP2Error):
             return result
         # for region
         if city_info['country_code'] is None:
             return result
-        for area in COUNTRIES_CODE.iterkeys():
+        for area in COUNTRIES_CODE.keys():
             if city_info['country_code'] in COUNTRIES_CODE[area]:
                 result = area
                 break
