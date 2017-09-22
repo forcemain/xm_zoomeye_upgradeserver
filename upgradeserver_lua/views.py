@@ -9,7 +9,7 @@ import os
 import json
 from .geoip import g_ip
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseServerError
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
 from .utils import (analysis_list_body, analysis_download_body, find_version, get_client_ip, area_can, uuid_can, dlog,
                     get_extend_id)
 
@@ -28,7 +28,6 @@ def list(request):
     clientip = get_client_ip(request)
     if clientip is None:
         level = 1 if req_body['Expect'] == 'Important' else 0
-        # for version
         version = find_version(settings.VERSIONS_DICT, devid, req_body['CurVersion'], level, req_body['Language'])
         if version[0] is None:
             dlog.error(version[1])
@@ -40,7 +39,8 @@ def list(request):
         dlog.warn(msg)
         return HttpResponse(msg, status=204)
     if uuid_can_type == 0:
-        area = g_ip.city(clientip)
+        # area = g_ip.city(clientip)
+        area = None
         if area is not None:
             area_can_res, area_can_type = area_can(area)
             if not area_can_res:
@@ -51,7 +51,6 @@ def list(request):
             msg = '{0} not in geoip mmdb'.format(clientip)
             dlog.warn(msg)
     level = 1 if req_body['Expect'] == 'Important' else 0
-    # for version
     version = find_version(settings.VERSIONS_DICT, devid, req_body['CurVersion'], level, req_body['Language'])
     if version[0] is None:
         dlog.error(version[1])
@@ -60,7 +59,6 @@ def list(request):
 
 
 def download(request):
-    # for param
     req_body_res = analysis_download_body(request.body)
     if req_body_res[0] is None:
         dlog.error(req_body_res[1])
