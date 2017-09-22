@@ -76,3 +76,21 @@ def firmware_list(request):
     if not settings.VERSIONS_DICT:
         return HttpResponseNotFound('versions not ready')
     return HttpResponse(json.dumps({'versions': settings.VERSIONS_DICT}))
+
+
+def area_list(request):
+    if not settings.AREASCTL_DICT:
+        return HttpResponseNotFound('areas not ready')
+    return HttpResponse(json.dumps({'areas': settings.AREASCTL_DICT}))
+
+
+def uuid_list(request):
+    if not settings.UUIDSCTL_DICT:
+        return HttpResponseNotFound('uuids not ready')
+    return HttpResponse(json.dumps({'areas': settings.UUIDSCTL_DICT}))
+
+
+def fdev_list(request):
+    if not settings.FIRMWARES_DICT:
+        return HttpResponseNotFound('firmwares not ready')
+    return HttpResponse(json.dumps({'firmwares': settings.FIRMWARES_DICT}))
