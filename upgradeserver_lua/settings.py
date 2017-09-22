@@ -127,8 +127,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'upgradeserver_lua', 'static')
 
 # Logging settings
-DLOGGER = 'django.upgradeserver'
-DJANGO_LOG_LEVEL = logging.getLevelName(logging.DEBUG)
+DJANGO_LOG_LEVEL = logging.getLevelName(logging.INFO)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -139,20 +138,32 @@ LOGGING = {
         }
      },
     'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+        'null': {
+            'level': 'DEBUG',
             'formatter': 'console',
-            'level': DJANGO_LOG_LEVEL
+            'class': 'django.utils.log.NullHandler'
+        },
+        'console': {
+            'level': 'WARN',
+            'formatter': 'console',
+            'class': 'logging.StreamHandler'
         },
     },
     'loggers': {
-        DLOGGER: {
+        'django': {
+            'level': 'INFO',
+            'handlers': ['null'],
+            'propagate': True
+        },
+        'django.request': {
+            'level': 'WARN',
             'handlers': ['console'],
-            'level': DJANGO_LOG_LEVEL
+            'propagate': False
         },
         'apscheduler.executors.default': {
+            'level': 'INFO',
             'handlers': ['console'],
-            'level': DJANGO_LOG_LEVEL
+            'propagate': False
         }
     },
 }

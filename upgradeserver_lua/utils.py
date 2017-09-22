@@ -7,14 +7,11 @@
 
 import re
 import os
+import sys
 import json
 import chardet
-from logging import getLogger
 from django.conf import settings
 from django.utils import timezone
-
-
-dlog = getLogger(settings.DLOGGER)
 
 
 def s_decode(strs, dec='utf-8'):
@@ -174,3 +171,8 @@ def uuid_can(uuid, devid):
         return True, 1
     else:
         return False, 1
+
+
+def dj_logging(msg):
+    fmt = '=> upgradeserver_lua: {0}{1}'.format(msg, os.linesep)
+    sys.stderr.write(msg % fmt)
