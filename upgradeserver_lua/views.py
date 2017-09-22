@@ -39,8 +39,7 @@ def list(request):
         dlog.warn(msg)
         return HttpResponse(msg, status=204)
     if uuid_can_type == 0:
-        # area = g_ip.city(clientip)
-        area = None
+        area = g_ip.city(clientip)
         if area is not None:
             area_can_res, area_can_type = area_can(area)
             if not area_can_res:
@@ -51,6 +50,7 @@ def list(request):
             msg = '{0} not in geoip mmdb'.format(clientip)
             dlog.warn(msg)
     level = 1 if req_body['Expect'] == 'Important' else 0
+    return HttpResponse('==========================', status=204)
     version = find_version(settings.VERSIONS_DICT, devid, req_body['CurVersion'], level, req_body['Language'])
     if version[0] is None:
         dlog.error(version[1])
