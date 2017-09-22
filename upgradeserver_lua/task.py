@@ -13,7 +13,7 @@ import zipfile
 import shutil
 from .models import Firmware
 from django.conf import settings
-from .utils import get_extend_id, dlog
+from .utils import get_extend_id, dj_logging
 from apscheduler.schedulers.background import BackgroundScheduler
 from .signals import update_area_cache, update_uuid_cache, update_firmware_cache
 
@@ -134,13 +134,13 @@ def auto_generate_dirs():
         firmware = Firmware.objects.filter(name=f)
         fdate_res = get_firmware_date(f)
         if fdate_res[0] is None:
-            dlog.error('{0}, {1}'.format(f, fdate_res[1]))
+            dj_logging('{0}, {1}'.format(f, fdate_res[1]))
             firmware and firmware.update(is_generated=False, notes=fdate_res[1])
             continue
         fdate = fdate_res[0]
         devid_res = get_firmware_devid(f)
         if devid_res[0] is None:
-            dlog.error('{0}, {1}'.format(f, devid_res[1]))
+            dj_logging('{0}, {1}'.format(f, devid_res[1]))
             firmware and firmware.update(is_generated=False, notes=devid_res[1])
             continue
         devid = devid_res[0]
