@@ -3,7 +3,6 @@ FROM index.docker.io/manmanli/base7:latest
 MAINTAINER limanman<xmdevops@vip.qq.com>
 
 # copy files
-COPY idmap.conf /xm_workspace/xmcloud3.0/upgradeserver_lua/
 COPY geoip.mmdb /xm_workspace/xmcloud3.0/upgradeserver_lua/
 COPY manage.py /xm_workspace/xmcloud3.0/upgradeserver_lua/
 COPY requirements.txt /xm_workspace/xmcloud3.0/upgradeserver_lua/

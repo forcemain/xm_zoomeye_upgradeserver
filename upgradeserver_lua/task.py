@@ -166,22 +166,6 @@ def auto_generate_dirs():
         firmware.update(is_generated=True)
 
 
-def update_idmap_cache():
-    idmap_file = os.path.join(settings.BASE_DIR, 'idmap.conf')
-    if not os.path.exists(idmap_file):
-        return None, '{0} not exists'.format(idmap_file)
-
-    with open(idmap_file) as fd:
-        try:
-            idmap = json.load(fd)
-        except ValueError as e:
-            return None, e
-        if not idmap:
-            return None, '{0} is empty'.format(idmap_file)
-
-        settings.IDMAPS_DICT = idmap
-
-
 def update_version_cache():
     data = {}
     root = settings.UPGRADE_PATH
@@ -208,10 +192,8 @@ def update_database_cache():
 scheduler = BackgroundScheduler()
 
 scheduler.add_job(update_database_cache)
-scheduler.add_job(update_idmap_cache)
 scheduler.add_job(update_version_cache)
 scheduler.add_job(auto_generate_dirs)
-scheduler.add_job(update_idmap_cache, 'interval', minutes=5)
 scheduler.add_job(update_version_cache, 'interval', seconds=5)
 scheduler.add_job(auto_generate_dirs, 'interval', seconds=5)
 
