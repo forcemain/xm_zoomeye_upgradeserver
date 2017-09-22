@@ -81,16 +81,16 @@ def firmware_list(request):
 def area_list(request):
     if not settings.AREASCTL_DICT:
         return HttpResponseNotFound('areas not ready')
-    return HttpResponse(json.dumps({'areas': settings.AREASCTL_DICT}))
+    return HttpResponse(json.dumps({'areas': settings.AREASCTL_DICT.keys()}))
 
 
 def uuid_list(request):
     if not settings.UUIDSCTL_DICT:
         return HttpResponseNotFound('uuids not ready')
-    return HttpResponse(json.dumps({'areas': settings.UUIDSCTL_DICT}))
+    return HttpResponse(json.dumps({'areas': settings.UUIDSCTL_DICT.keys()}))
 
 
 def fdev_list(request):
     if not settings.FIRMWARES_DICT:
         return HttpResponseNotFound('firmwares not ready')
-    return HttpResponse(json.dumps({'firmwares': settings.FIRMWARES_DICT}))
+    return HttpResponse(json.dumps({'firmwares': settings.FIRMWARES_DICT.keys()}))

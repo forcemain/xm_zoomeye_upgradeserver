@@ -105,7 +105,7 @@ def find_version(versions, devid, cur_version, level, language):
         latest['FileLevel'] = level
 
     if not latest:
-        return None, 'already latest version'
+        return None, '{0} already latest version'.format(devid)
 
     l_name = ''.join(('ChangeLog_', language, '.dat'))
     d_path = os.path.join(settings.UPGRADE_PATH, latest['DevID'], latest['Date'])
