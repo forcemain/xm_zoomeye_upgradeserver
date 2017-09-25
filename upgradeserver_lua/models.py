@@ -353,3 +353,4 @@ class Firmware(models.Model):
     def __str__(self):
         return '<Firmware {0}>'.format(self.name)
 
+
