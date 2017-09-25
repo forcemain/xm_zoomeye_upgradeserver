@@ -180,7 +180,7 @@ def update_version_cache():
         key = '_'.join(('DevID', d))
         data[key] = version
 
-    settings.VERSIONS_DICT = data
+    settings.VERSIONS_DICT.update(data)
 
 
 def update_database_cache():
