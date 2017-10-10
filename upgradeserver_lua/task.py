@@ -151,7 +151,7 @@ def auto_generate_dirs():
         os.makedirs(date_dir)
 
         shutil.move(f, date_dir)
-        flevel = 1 if firmware and firmware[0].is_important else 0
+        flevel = 1 if (firmware and firmware[0].is_important) else 0
         create_files = [
             'Level_{0}.dat'.format(flevel),
             'ChangeLog_Chinese.dat',

@@ -102,7 +102,6 @@ def find_version(versions, devid, cur_version, level, language):
 
     if version[0] and version[0]['Date'] > cur_version:
         latest = version[0]
-        latest['FileLevel'] = level
 
     if not latest:
         return None, '{0} already latest version'.format(devid)
