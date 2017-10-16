@@ -10,6 +10,7 @@ import os
 import sys
 import json
 import chardet
+from copy import deepcopy
 from django.conf import settings
 from django.utils import timezone
 
@@ -101,12 +102,16 @@ def find_version(versions, devid, cur_version, level, language):
         return None, '{0} not in versions'.format(devid_key)
 
     if version[0] and version[0]['Date'] > cur_version:
-        latest = version[0]
+        latest = deepcopy(version[0])
 
     if not latest:
         return None, '{0} already latest version'.format(devid)
 
-    l_name = ''.join(('ChangeLog_', language, '.dat'))
+    if 'Chinese' in language:
+        l_lang = 'Chinese'
+    else:
+        l_lang = 'English'
+    l_name = ''.join(('ChangeLog_', l_lang, '.dat'))
     d_path = os.path.join(settings.UPGRADE_PATH, latest['DevID'], latest['Date'])
 
     try:
