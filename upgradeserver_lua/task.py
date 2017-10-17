@@ -35,8 +35,7 @@ def get_version_info(date, devid_root):
         level_match = re.match(level_pattern, f)
 
         if level_match:
-            # version_info['FileLevel'] = int(level_match.group(1))
-            version_info['FileLevel'] = 0
+            version_info['FileLevel'] = int(level_match.group(1))
 
         firmware_match = re.match(firmware_pattern, f)
         if firmware_match:
