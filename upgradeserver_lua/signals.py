@@ -6,8 +6,8 @@
 
 
 from django.conf import settings
-from .models import Firmware, AreaControl, UuidControl
 from django.db.models.signals import post_save, post_delete
+from .models import Firmware, AreaControl, UuidControl, DateControl
 
 
 def update_area_cache():
@@ -26,6 +26,18 @@ def update_uuid_cache():
             item['devid']: {'start_time': item['start_time'], 'end_time': item['end_time'], 'notes': item['notes']}
         })
 
+
+def update_date_cache():
+    settings.DATESCTL_DICT.clear()
+    for item in DateControl.objects.values():
+        settings.DATESCTL_DICT.setdefault(item['devid'], {})
+        settings.DATESCTL_DICT.update({
+            'start_time': item['start_time'],
+            'end_time': item['end_time'],
+            'start_date': item['start_date'],
+            'end_date': item['end_date'],
+            'notes': item['notes']
+        })
 
 def update_firmware_cache():
     settings.FIRMWARES_DICT.clear()

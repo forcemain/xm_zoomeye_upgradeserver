@@ -177,6 +177,22 @@ def uuid_can(uuid, devid):
         return False, 1
 
 
+def date_can(devid, curversion):
+    if not settings.DATESCTL_DICT:
+        return True, 0
+    if devid not in settings.DATESCTL_DICT:
+        return True, 0
+    devid_val = settings.DATESCTL_DICT[devid]
+    time = timezone.now()
+    if (devid_val['start_time'] and time < devid_val['start_time']) or \
+       (devid_val['end_time'] and time > devid_val['end_time']):
+        return False, 1
+    if (devid_val['start_date'] and curversion < devid_val['start_time'].strftime('%Y-%m-%d')) or \
+       (devid_val['end_date'] and curversion > devid_val['end_date'].strftime('%Y-%m-%d')):
+        return False, 1
+    return True, 1
+
+
 def dj_logging(msg):
     log = '=> upgradeserver_lua: {0}{1}'.format(msg, os.linesep)
     sys.stderr.write(log)

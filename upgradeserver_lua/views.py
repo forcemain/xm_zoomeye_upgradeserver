@@ -10,7 +10,7 @@ import json
 from .geoip import g_ip
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
-from .utils import (analysis_list_body, analysis_download_body, find_version, get_client_ip, area_can, uuid_can,
+from .utils import (analysis_list_body, analysis_download_body, find_version, get_client_ip, area_can, uuid_can, date_can,
                     dj_logging, get_extend_id)
 
 
@@ -33,6 +33,11 @@ def list(request):
             dj_logging(version[1])
             return HttpResponse(version[1], status=204)
         return HttpResponse(json.dumps(version[0]))
+    date_can_res, date_can_type = date_can(req_body['CurVersion', devid])
+    if not date_can_res:
+        msg = '{0} CurVersion not allowed'.format(devid)
+        dj_logging(msg)
+        return HttpResponse(msg, status=204)
     uuid_can_res, uuid_can_type = uuid_can(req_body['UUID'], devid)
     if not uuid_can_res:
         msg = '{0} not allowed'.format(req_body['UUID'])

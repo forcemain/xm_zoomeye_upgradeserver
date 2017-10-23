@@ -14,4 +14,4 @@ class UpgServerConfig(AppConfig):
 
 
 class UpgSuitConfig(DjangoSuitConfig):
-    layout = 'horizontal'
+    layout = 'vertical'

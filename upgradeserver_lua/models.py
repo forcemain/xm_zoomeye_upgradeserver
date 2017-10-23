@@ -342,6 +342,15 @@ class UuidControl(models.Model, Control):
     notes = models.TextField(u'附加信息', default='', blank=True)
 
 
+class DateControl(models.Model, Control):
+    devid = models.CharField(u'固件序列号', max_length=100, unique=False)
+    start_time = models.DateTimeField(u'开始时间', default=None, null=True, blank=True)
+    end_time = models.DateTimeField(u'结束时间', default=None, null=True, blank=True)
+    start_date = models.DateField(u'开始日期', default=None, null=True, blank=True)
+    end_date = models.DateField(u'结束日期', default=None, null=True, blank=True)
+    notes = models.TextField(u'附加信息', default='', blank=True)
+
+
 class Firmware(models.Model):
     name = models.FileField(u'上传文件', unique=True)
     date = models.DateTimeField(u'上传时间', default=timezone.now(), blank=True)
