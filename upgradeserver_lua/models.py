@@ -353,7 +353,7 @@ class DateControl(models.Model, Control):
 
 class Firmware(models.Model):
     name = models.FileField(u'上传文件', unique=True)
-    date = models.DateTimeField(u'上传时间', default=timezone.now(), blank=True)
+    date = models.DateTimeField(u'上传时间', default=timezone.now, blank=True)
     is_important = models.BooleanField(u'重要版本', default=False, blank=True)
     is_generated = models.BooleanField(u'是否生成', default=False, blank=True)
 
