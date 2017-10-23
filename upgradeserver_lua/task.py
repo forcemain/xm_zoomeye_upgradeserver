@@ -15,7 +15,7 @@ from .models import Firmware
 from django.conf import settings
 from .utils import get_extend_id, dj_logging
 from apscheduler.schedulers.background import BackgroundScheduler
-from .signals import update_area_cache, update_uuid_cache, update_firmware_cache
+from .signals import update_area_cache, update_uuid_cache, update_date_cache, update_firmware_cache
 
 
 FIRMWARE_PATTERN = re.compile(r'''(?<=\.)(?P<date>[0-9]+)(?=\.bin|_ALL\.bin|_all\.bin)''')
@@ -179,6 +179,7 @@ def update_version_cache():
 def update_database_cache():
     update_area_cache()
     update_uuid_cache()
+    update_date_cache()
     update_firmware_cache()
 
 

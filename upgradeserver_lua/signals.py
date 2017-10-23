@@ -39,6 +39,7 @@ def update_date_cache():
             'notes': item['notes']
         })
 
+
 def update_firmware_cache():
     settings.FIRMWARES_DICT.clear()
     for item in Firmware.objects.values():
