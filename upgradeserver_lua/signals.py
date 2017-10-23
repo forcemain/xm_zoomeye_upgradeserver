@@ -51,6 +51,7 @@ def update_firmware_cache():
 def update_memory_cache(sender, **kwargs):
     update_area_cache()
     update_uuid_cache()
+    update_date_cache()
     update_firmware_cache()
 
 
