@@ -188,6 +188,7 @@ scheduler = BackgroundScheduler()
 scheduler.add_job(update_database_cache)
 scheduler.add_job(update_version_cache)
 scheduler.add_job(auto_generate_dirs)
+scheduler.add_job(update_database_cache, 'interval', seconds=5)
 scheduler.add_job(update_version_cache, 'interval', seconds=5)
 scheduler.add_job(auto_generate_dirs, 'interval', seconds=5)
 

@@ -92,13 +92,13 @@ def area_list(request):
 def uuid_list(request):
     if not settings.UUIDSCTL_DICT:
         return HttpResponseNotFound('uuids not ready')
-    return HttpResponse(json.dumps({'areas': settings.UUIDSCTL_DICT.keys()}))
+    return HttpResponse(json.dumps({'uuids': settings.UUIDSCTL_DICT.keys()}))
 
 
 def date_list(request):
     if not settings.DATESCTL_DICT:
         return HttpResponseNotFound('dates not ready')
-    return HttpResponse(json.dumps({'areas': settings.DATESCTL_DICT.keys()}))
+    return HttpResponse(json.dumps({'dates': settings.DATESCTL_DICT.keys()}))
 
 
 def fdev_list(request):
