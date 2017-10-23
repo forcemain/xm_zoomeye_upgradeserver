@@ -95,6 +95,12 @@ def uuid_list(request):
     return HttpResponse(json.dumps({'areas': settings.UUIDSCTL_DICT.keys()}))
 
 
+def date_list(request):
+    if not settings.DATESCTL_DICT:
+        return HttpResponseNotFound('dates not ready')
+    return HttpResponse(json.dumps({'areas': settings.DATESCTL_DICT.keys()}))
+
+
 def fdev_list(request):
     if not settings.FIRMWARES_DICT:
         return HttpResponseNotFound('firmwares not ready')
