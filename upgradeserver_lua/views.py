@@ -33,7 +33,7 @@ def list(request):
             dj_logging(version[1])
             return HttpResponse(version[1], status=204)
         return HttpResponse(json.dumps(version[0]))
-    date_can_res, date_can_type = date_can(req_body['CurVersion'], devid)
+    date_can_res, date_can_type = date_can(devid, req_body['CurVersion'])
     if not date_can_res:
         msg = '{0} CurVersion not allowed'.format(devid)
         dj_logging(msg)

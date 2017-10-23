@@ -14,7 +14,11 @@ def update_area_cache():
     settings.AREASCTL_DICT.clear()
     for item in AreaControl.objects.values():
         settings.AREASCTL_DICT.update({
-            item['area']: {'start_time': item['start_time'], 'end_time': item['end_time'], 'notes': item['notes']}
+            item['area']: {
+                'start_time': item['start_time'],
+                'end_time': item['end_time'],
+                'notes': item['notes']
+            }
         })
 
 
@@ -23,7 +27,11 @@ def update_uuid_cache():
     for item in UuidControl.objects.values():
         settings.UUIDSCTL_DICT.setdefault(item['devid'], {})
         settings.UUIDSCTL_DICT.update({
-            item['devid']: {'start_time': item['start_time'], 'end_time': item['end_time'], 'notes': item['notes']}
+            item['devid']: {
+                'start_time': item['start_time'],
+                'end_time': item['end_time'],
+                'notes': item['notes']
+            }
         })
 
 
@@ -32,11 +40,13 @@ def update_date_cache():
     for item in DateControl.objects.values():
         settings.DATESCTL_DICT.setdefault(item['devid'], {})
         settings.DATESCTL_DICT.update({
-            'start_time': item['start_time'],
-            'end_time': item['end_time'],
-            'start_date': item['start_date'],
-            'end_date': item['end_date'],
-            'notes': item['notes']
+            item['devid']: {
+                'start_time': item['start_time'],
+                'end_time': item['end_time'],
+                'start_date': item['start_date'],
+                'end_date': item['end_date'],
+                'notes': item['notes']
+            }
         })
 
 
@@ -44,8 +54,12 @@ def update_firmware_cache():
     settings.FIRMWARES_DICT.clear()
     for item in Firmware.objects.values():
         settings.FIRMWARES_DICT.update({
-            item['name']: {'date': item['date'], 'is_generated': item['is_generated'],
-                           'is_important': item['is_important'], 'notes': item['notes']}
+            item['name']: {
+                'date': item['date'],
+                'is_generated': item['is_generated'],
+                'is_important': item['is_important'],
+                'notes': item['notes']
+            }
         })
 
 
