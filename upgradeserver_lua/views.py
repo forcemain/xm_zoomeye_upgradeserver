@@ -35,12 +35,12 @@ def list(request):
         return HttpResponse(json.dumps(version[0]))
     date_can_res, date_can_type = date_can(devid, req_body['CurVersion'])
     if not date_can_res:
-        msg = '{0} CurVersion not allowed'.format(devid)
+        msg = '{0} datecontrol not allowed'.format(devid)
         dj_logging(msg)
         return HttpResponse(msg, status=204)
     uuid_can_res, uuid_can_type = uuid_can(req_body['UUID'], devid)
     if not uuid_can_res:
-        msg = '{0} not allowed'.format(req_body['UUID'])
+        msg = '{0} uuidcontrol not allowed'.format(req_body['UUID'])
         dj_logging(msg)
         return HttpResponse(msg, status=204)
     if uuid_can_type == 0:
@@ -48,7 +48,7 @@ def list(request):
         if area is not None:
             area_can_res, area_can_type = area_can(area)
             if not area_can_res:
-                msg = '{0} not allowed'.format(clientip)
+                msg = '{0} areacontrol not allowed'.format(area)
                 dj_logging(msg)
                 return HttpResponse(msg, status=204)
         else:

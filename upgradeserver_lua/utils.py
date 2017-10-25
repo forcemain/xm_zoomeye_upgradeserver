@@ -141,7 +141,7 @@ def area_can(area):
     areas = []
     area_list = area.split('_') if '_' in area else [area]
     for k, v in enumerate(area_list, start=1):
-        area_key = ':'.join(area_list[:k]) if k > 1 else v
+        area_key = '_'.join(area_list[:k]) if k > 1 else v
         areas.append(area_key)
 
     if not settings.AREASCTL_DICT:
