@@ -196,3 +196,4 @@ def date_can(devid, curversion):
 def dj_logging(msg):
     log = '=> upgradeserver_lua: {0}{1}'.format(msg, os.linesep)
     sys.stderr.write(log)
+
