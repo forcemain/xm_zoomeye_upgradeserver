@@ -187,7 +187,7 @@ def date_can(devid, curversion):
     if (devid_val['start_time'] and time < devid_val['start_time']) or \
        (devid_val['end_time'] and time > devid_val['end_time']):
         return False, 1
-    if (devid_val['start_date'] and curversion < devid_val['start_time'].strftime('%Y-%m-%d')) or \
+    if (devid_val['start_date'] and curversion < devid_val['start_date'].strftime('%Y-%m-%d')) or \
        (devid_val['end_date'] and curversion > devid_val['end_date'].strftime('%Y-%m-%d')):
         return False, 1
     return True, 1
