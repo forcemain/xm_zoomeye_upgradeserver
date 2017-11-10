@@ -26,12 +26,11 @@ def update_uuid_cache():
     settings.UUIDSCTL_DICT.clear()
     for item in UuidControl.objects.values():
         settings.UUIDSCTL_DICT.setdefault(item['devid'], {})
-        settings.UUIDSCTL_DICT.update({
-            item['devid']: {
-                'start_time': item['start_time'],
-                'end_time': item['end_time'],
-                'notes': item['notes']
-            }
+        settings.UUIDSCTL_DICT[item['devid']].setdefault(item['uuid'], {})
+        settings.UUIDSCTL_DICT[item['devid']][item['uuid']].update({
+            'start_time': item['start_time'],
+            'end_time': item['end_time'],
+            'notes': item['notes']
         })
 
 
