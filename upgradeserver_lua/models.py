@@ -325,7 +325,7 @@ class Control(object):
 
 
 class AreaControl(models.Model, Control):
-    area = models.CharField(u'设备区域', max_length=100, choices=AREA_CHOICE, unique=True)
+    area = models.CharField(u'设备区域', max_length=100, choices=AREA_CHOICE, unique=False)
     devid = models.CharField(u'固件序列号', max_length=100, unique=False)
     start_time = models.DateTimeField(u'开始时间', default=None, null=True, blank=True)
     end_time = models.DateTimeField(u'结束时间', default=None, null=True, blank=True)
