@@ -7,6 +7,9 @@
 
 import os
 import json
+import sys;
+reload(sys);
+sys.setdefaultencoding('utf8')
 from .geoip import g_ip
 from .models import UpgradeLog
 from django.conf import settings
@@ -64,7 +67,7 @@ def list(request):
         dj_logging(version[1])
         return HttpResponse(version[1], status=204)
     # 记录日志
-    upgrade_log = UpgradeLog(uuid=req_body['UUID'], devid=devid, area=area or 'NaN')
+    upgrade_log = UpgradeLog(uuid=req_body['UUID'], devid=devid, area=area or 'Unrecognized')
     upgrade_log.save()
     return HttpResponse(json.dumps(version[0]))
 
