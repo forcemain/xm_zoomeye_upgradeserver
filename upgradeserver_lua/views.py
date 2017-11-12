@@ -86,6 +86,10 @@ def list(request):
             msg = '{0} areacontrol not allowed'.format(area)
             dj_logging(msg)
             return HttpResponse(msg, status=204)
+        if area_can_type:
+            # 记录日志
+            upgrade_log = UpgradeLog(uuid=req_body['UUID'], devid=devid, area=area or 'Unrecognized')
+            upgrade_log.save()
     else:
         msg = '{0} not in geoip mmdb'.format(clientip)
         dj_logging(msg)
@@ -95,9 +99,6 @@ def list(request):
     if version[0] is None:
         dj_logging(version[1])
         return HttpResponse(version[1], status=204)
-    # 记录日志
-    upgrade_log = UpgradeLog(uuid=req_body['UUID'], devid=devid, area=area or 'Unrecognized')
-    upgrade_log.save()
     return HttpResponse(json.dumps(version[0]))
 
 
