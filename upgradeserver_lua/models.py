@@ -351,6 +351,13 @@ class DateControl(models.Model, Control):
     notes = models.TextField(u'附加信息', default='', blank=True)
 
 
+class UpgradeLog(models.Model):
+    uuid = models.CharField(u'设备序列号', max_length=100, unique=False)
+    devid = models.CharField(u'固件序列号', max_length=100, unique=False)
+    area = models.CharField(u'设备区域', max_length=100, unique=False)
+    upgrade_time = models.DateTimeField(u'升级时间', default=timezone.now, blank=True)
+
+
 class Firmware(models.Model):
     name = models.FileField(u'上传文件', unique=True)
     date = models.DateTimeField(u'上传时间', default=timezone.now, blank=True)

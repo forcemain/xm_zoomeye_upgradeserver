@@ -8,6 +8,7 @@
 import os
 import json
 from .geoip import g_ip
+from .models import UpgradeLog
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
 from .utils import (analysis_list_body, analysis_download_body, find_version, get_client_ip, area_can, uuid_can, date_can,
@@ -33,32 +34,38 @@ def list(request):
             dj_logging(version[1])
             return HttpResponse(version[1], status=204)
         return HttpResponse(json.dumps(version[0]))
+    # 区域控制
+    area = g_ip.city(clientip)
+    if area is not None:
+        area_can_res, area_can_type = area_can(area)
+        if not area_can_res:
+            msg = '{0} areacontrol not allowed'.format(area)
+            dj_logging(msg)
+            return HttpResponse(msg, status=204)
+    else:
+        msg = '{0} not in geoip mmdb'.format(clientip)
+        dj_logging(msg)
+    # 日期控制
     date_can_res, date_can_type = date_can(devid, req_body['CurVersion'])
     if not date_can_res:
         msg = '{0} datecontrol not allowed'.format(devid)
         dj_logging(msg)
         return HttpResponse(msg, status=204)
+    # uuid控制
     uuid_can_res, uuid_can_type = uuid_can(req_body['UUID'], devid)
     if not uuid_can_res:
         msg = '{0} uuidcontrol not allowed'.format(req_body['UUID'])
         dj_logging(msg)
         return HttpResponse(msg, status=204)
-    if uuid_can_type == 0:
-        area = g_ip.city(clientip)
-        if area is not None:
-            area_can_res, area_can_type = area_can(area)
-            if not area_can_res:
-                msg = '{0} areacontrol not allowed'.format(area)
-                dj_logging(msg)
-                return HttpResponse(msg, status=204)
-        else:
-            msg = '{0} not in geoip mmdb'.format(clientip)
-            dj_logging(msg)
+
     level = 1 if req_body['Expect'] == 'Important' else 0
     version = find_version(settings.VERSIONS_DICT, devid, req_body['CurVersion'], level, req_body['Language'])
     if version[0] is None:
         dj_logging(version[1])
         return HttpResponse(version[1], status=204)
+    # 记录日志
+    upgrade_log = UpgradeLog(uuid=req_body['UUID'], devid=devid, area=area or 'NaN')
+    upgrade_log.save()
     return HttpResponse(json.dumps(version[0]))
 
 

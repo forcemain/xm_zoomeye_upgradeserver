@@ -5,12 +5,14 @@
 # emails: xmdevops@vip.qq.com
 
 
+from datetime import timedelta
 from django.conf import settings
+from django.utils import timezone
 from django.db.models.signals import post_save, post_delete
-from .models import Firmware, AreaControl, UuidControl, DateControl
+from .models import Firmware, AreaControl, UuidControl, DateControl, UpgradeLog
 
 
-def update_area_cache():
+def update_area_cache(*args, **kwargs):
     settings.AREASCTL_DICT.clear()
     for item in AreaControl.objects.values():
         settings.AREASCTL_DICT.update({
@@ -22,7 +24,7 @@ def update_area_cache():
         })
 
 
-def update_uuid_cache():
+def update_uuid_cache(*args, **kwargs):
     settings.UUIDSCTL_DICT.clear()
     for item in UuidControl.objects.values():
         settings.UUIDSCTL_DICT.setdefault(item['devid'], {})
@@ -34,7 +36,7 @@ def update_uuid_cache():
         })
 
 
-def update_date_cache():
+def update_date_cache(*args, **kwargs):
     settings.DATESCTL_DICT.clear()
     for item in DateControl.objects.values():
         settings.DATESCTL_DICT.setdefault(item['devid'], {})
@@ -49,7 +51,7 @@ def update_date_cache():
         })
 
 
-def update_firmware_cache():
+def update_firmware_cache(*args, **kwargs):
     settings.FIRMWARES_DICT.clear()
     for item in Firmware.objects.values():
         settings.FIRMWARES_DICT.update({
@@ -62,13 +64,19 @@ def update_firmware_cache():
         })
 
 
-def update_memory_cache(sender, **kwargs):
-    update_area_cache()
-    update_uuid_cache()
-    update_date_cache()
-    update_firmware_cache()
+def recycle_upgradelog(*args, **kwargs):
+    yesterday = timezone.now() - timedelta(days=1)
+    UpgradeLog.objects.filter(upgrade_time__lt=yesterday).delete()
 
 
-post_save.connect(update_memory_cache)
-post_delete.connect(update_memory_cache)
+post_save.connect(update_area_cache, sender=AreaControl)
+post_save.connect(update_uuid_cache, sender=UuidControl)
+post_save.connect(update_date_cache, sender=DateControl)
+post_save.connect(update_firmware_cache, sender=Firmware)
+post_save.connect(recycle_upgradelog, sender=UpgradeLog)
+
+post_delete.connect(update_area_cache, sender=AreaControl)
+post_delete.connect(update_uuid_cache, sender=UuidControl)
+post_delete.connect(update_date_cache, sender=DateControl)
+post_delete.connect(update_firmware_cache, sender=Firmware)
 

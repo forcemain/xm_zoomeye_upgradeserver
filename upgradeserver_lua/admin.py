@@ -6,7 +6,7 @@
 
 
 from django.contrib import admin
-from .models import AreaControl, UuidControl, DateControl, Firmware
+from .models import AreaControl, UuidControl, DateControl, UpgradeLog, Firmware
 
 
 class UuidControlAdmin(admin.ModelAdmin):
@@ -33,6 +33,14 @@ class DateControlAdmin(admin.ModelAdmin):
     list_display = ['id', 'devid', 'is_expired', 'start_time', 'end_time', 'start_date', 'end_date', 'notes']
 
 
+class UpgradeLogAdmin(admin.ModelAdmin):
+    ordering = ['upgrade_time']
+    list_per_page = 20
+    fields = ['upgrade_time', 'uuid', 'devid', 'area']
+    search_fields = ['upgrade_time', 'uuid', 'devid', 'area']
+    list_display = ['id', 'upgrade_time', 'uuid', 'devid', 'area']
+
+
 class FirmwareAdmin(admin.ModelAdmin):
     ordering = ['name']
     list_per_page = 20
@@ -44,4 +52,5 @@ class FirmwareAdmin(admin.ModelAdmin):
 admin.site.register(UuidControl, UuidControlAdmin)
 admin.site.register(DateControl, DateControlAdmin)
 admin.site.register(AreaControl, AreaControlAdmin)
+admin.site.register(UpgradeLog, UpgradeLogAdmin)
 admin.site.register(Firmware, FirmwareAdmin)
