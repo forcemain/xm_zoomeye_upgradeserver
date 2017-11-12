@@ -148,9 +148,6 @@ def area_can(area, devid):
         area_key = '_'.join(area_list[:k]) if k > 1 else v
         areas.append(area_key)
 
-    if not settings.AREASCTL_DICT:
-        return True, 0
-
     area_val = None
     for area_key in areas:
         area_val = settings.AREASCTL_DICT.get(area_key, None)
