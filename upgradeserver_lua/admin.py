@@ -20,9 +20,9 @@ class UuidControlAdmin(admin.ModelAdmin):
 class AreaControlAdmin(admin.ModelAdmin):
     ordering = ['area']
     list_per_page = 20
-    search_fields = ['area', 'notes']
-    fields = ['area', 'start_time', 'end_time', 'notes']
-    list_display = ['id', 'area', 'is_expired', 'start_time', 'end_time', 'notes']
+    search_fields = ['area', 'devid', 'notes']
+    fields = ['area', 'devid', 'start_time', 'end_time', 'notes']
+    list_display = ['id', 'area', 'devid', 'is_expired', 'start_time', 'end_time', 'notes']
 
 
 class DateControlAdmin(admin.ModelAdmin):
@@ -34,7 +34,7 @@ class DateControlAdmin(admin.ModelAdmin):
 
 
 class UpgradeLogAdmin(admin.ModelAdmin):
-    ordering = ['upgrade_time']
+    ordering = ['-upgrade_time']
     list_per_page = 20
     fields = ['upgrade_time', 'uuid', 'devid', 'area']
     search_fields = ['upgrade_time', 'uuid', 'devid', 'area']
@@ -54,3 +54,4 @@ admin.site.register(DateControl, DateControlAdmin)
 admin.site.register(AreaControl, AreaControlAdmin)
 admin.site.register(UpgradeLog, UpgradeLogAdmin)
 admin.site.register(Firmware, FirmwareAdmin)
+

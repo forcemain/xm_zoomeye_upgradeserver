@@ -137,7 +137,11 @@ def get_client_ip(request):
     return ip
 
 
-def area_can(area):
+def area_can(area, devid):
+    if not settings.AREASCTL_DICT:
+        return True, 0
+    if devid not in settings.DEVIDCTL_DICT:
+        return True, 0
     areas = []
     area_list = area.split('_') if '_' in area else [area]
     for k, v in enumerate(area_list, start=1):

@@ -82,7 +82,7 @@ AREA_CHOICE = [
         ('Asia_Saudi', 'Asia_Saudi'),
         ('Asia_Singapore', 'Asia_Singapore'),
         ('Asia_Syria', 'Asia_Syria'),
-        ('Asia_TaiWan', 'Asia_TaiWan'),
+        ('Asia_TaiWan', 'Asia_Taiwan'),
         ('Asia_Tajikistan', 'Asia_Tajikistan'),
         ('Asia_Thailand', 'Asia_Thailand'),
         ('Asia_TimorLeste', 'Asia_TimorLeste'),
@@ -326,6 +326,7 @@ class Control(object):
 
 class AreaControl(models.Model, Control):
     area = models.CharField(u'设备区域', max_length=100, choices=AREA_CHOICE, unique=True)
+    devid = models.CharField(u'固件序列号', max_length=100, unique=False)
     start_time = models.DateTimeField(u'开始时间', default=None, null=True, blank=True)
     end_time = models.DateTimeField(u'结束时间', default=None, null=True, blank=True)
     notes = models.TextField(u'附加信息', default='', blank=True)

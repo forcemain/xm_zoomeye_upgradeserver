@@ -14,8 +14,8 @@ from .geoip import g_ip
 from .models import UpgradeLog
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
-from .utils import (analysis_list_body, analysis_download_body, find_version, get_client_ip, area_can, uuid_can, date_can,
-                    dj_logging, get_extend_id)
+from .utils import (analysis_list_body, analysis_download_body, find_version, get_client_ip,
+                    area_can, uuid_can, date_can, dj_logging, get_extend_id)
 
 
 def list(request):
@@ -37,10 +37,51 @@ def list(request):
             dj_logging(version[1])
             return HttpResponse(version[1], status=204)
         return HttpResponse(json.dumps(version[0]))
-    # 区域控制
+
+    """ 日期控制-> UUID控制-> 区域控制
+    
+    1. datecontrol
+    1.1. devid in cachemap ?
+    1.1.1. no, continue uuidcontrol 
+    1.1.2. yes, is expired ?
+    1.1.2.1. yes, 204
+    1.1.2.2. no, currentversion in dateRange ?
+    1.1.2.2.1. yes, continue uuidcontrol
+    1.1.2.2.2. no, 204
+    
+    
+    2. uuidcontrol
+    2.1. devid in cachemap ?
+    2.1.1. no, continue areacontrol
+    2.1.2. yes, uuid in cachemap ?
+    2.1.2.1. no, 204
+    2.1.2.2. yes, is expired ?
+    2.1.2.2.1. yes, 204
+    2.1.2.2.2. no, continue areacontrol
+    
+    3. areacontrol
+    3.1. devid in cachemap ?
+    3.1.1. no, 200
+    3.1.2. yes, area in cachemap ?
+    3.1.2.1. no, 204
+    3.1.2.2. yes, is expired ?
+    3.1.2.2.1. yes, 204
+    3.1.2.2.2. no, 200
+  
+    """
+    date_can_res, date_can_type = date_can(devid, req_body['CurVersion'])
+    if not date_can_res:
+        msg = '{0} datecontrol not allowed'.format(devid)
+        dj_logging(msg)
+        return HttpResponse(msg, status=204)
+    uuid_can_res, uuid_can_type = uuid_can(req_body['UUID'], devid)
+    if not uuid_can_res:
+        msg = '{0} uuidcontrol not allowed'.format(req_body['UUID'])
+        dj_logging(msg)
+        return HttpResponse(msg, status=204)
     area = g_ip.city(clientip)
     if area is not None:
-        area_can_res, area_can_type = area_can(area)
+        area_can_res, area_can_type = area_can(area, devid)
         if not area_can_res:
             msg = '{0} areacontrol not allowed'.format(area)
             dj_logging(msg)
@@ -48,18 +89,6 @@ def list(request):
     else:
         msg = '{0} not in geoip mmdb'.format(clientip)
         dj_logging(msg)
-    # 日期控制
-    date_can_res, date_can_type = date_can(devid, req_body['CurVersion'])
-    if not date_can_res:
-        msg = '{0} datecontrol not allowed'.format(devid)
-        dj_logging(msg)
-        return HttpResponse(msg, status=204)
-    # uuid控制
-    uuid_can_res, uuid_can_type = uuid_can(req_body['UUID'], devid)
-    if not uuid_can_res:
-        msg = '{0} uuidcontrol not allowed'.format(req_body['UUID'])
-        dj_logging(msg)
-        return HttpResponse(msg, status=204)
 
     level = 1 if req_body['Expect'] == 'Important' else 0
     version = find_version(settings.VERSIONS_DICT, devid, req_body['CurVersion'], level, req_body['Language'])

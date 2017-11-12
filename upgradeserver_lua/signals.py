@@ -14,7 +14,11 @@ from .models import Firmware, AreaControl, UuidControl, DateControl, UpgradeLog
 
 def update_area_cache(*args, **kwargs):
     settings.AREASCTL_DICT.clear()
+    settings.DEVIDCTL_DICT.clear()
     for item in AreaControl.objects.values():
+        settings.DEVIDCTL_DICT.update({
+            item['devid']: {}
+        })
         settings.AREASCTL_DICT.update({
             item['area']: {
                 'start_time': item['start_time'],
@@ -79,4 +83,3 @@ post_delete.connect(update_area_cache, sender=AreaControl)
 post_delete.connect(update_uuid_cache, sender=UuidControl)
 post_delete.connect(update_date_cache, sender=DateControl)
 post_delete.connect(update_firmware_cache, sender=Firmware)
-
