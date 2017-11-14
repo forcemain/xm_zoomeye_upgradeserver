@@ -82,7 +82,7 @@ AREA_CHOICE = [
         ('Asia_Saudi', 'Asia_Saudi'),
         ('Asia_Singapore', 'Asia_Singapore'),
         ('Asia_Syria', 'Asia_Syria'),
-        ('Asia_TaiWan', 'Asia_Taiwan'),
+        ('Asia_Taiwan', 'Asia_Taiwan'),
         ('Asia_Tajikistan', 'Asia_Tajikistan'),
         ('Asia_Thailand', 'Asia_Thailand'),
         ('Asia_TimorLeste', 'Asia_TimorLeste'),
