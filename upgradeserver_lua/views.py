@@ -86,10 +86,6 @@ def list(request):
             msg = '{0} areacontrol not allowed'.format(area)
             dj_logging(msg)
             return HttpResponse(msg, status=204)
-        if area_can_type:
-            # 记录日志
-            upgrade_log = UpgradeLog(uuid=req_body['UUID'], devid=devid, area=area or 'Unrecognized')
-            upgrade_log.save()
     else:
         msg = '{0} not in geoip mmdb'.format(clientip)
         dj_logging(msg)
@@ -108,6 +104,15 @@ def download(request):
         dj_logging(req_body_res[1])
         return HttpResponseBadRequest(req_body_res[1])
     req_body = req_body_res[0]
+
+    # 记录下载固件记录(但并不保证下载成功)
+    extend_id = get_extend_id(req_body['DevID'], settings.IDMAPS_DICT)
+    devid = extend_id[0]
+    clientip = get_client_ip(request)
+    area = g_ip.city(clientip)
+    upgrade_log = UpgradeLog(uuid=req_body['UUID'], devid=devid, area=area or 'Unrecognized')
+    upgrade_log.save()
+
     f_path = os.path.join(
         '/download_file/', req_body['DevID'],
         req_body['Date'], req_body['FileName']
