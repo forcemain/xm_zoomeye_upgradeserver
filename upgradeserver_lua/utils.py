@@ -94,36 +94,36 @@ def get_extend_id(srcid, idmap):
 
 
 def find_version(versions, devid, cur_version, level, language):
-    latest = {}
+    version_info = {}
 
     devid_key = '_'.join(('DevID', devid))
     version = versions.get(devid_key, None)
     if version is None:
         return None, '{0} not in versions'.format(devid_key)
 
-    if version[0] and version[0]['Date'] > cur_version:
-        latest = deepcopy(version[0])
+    if version[level] and version[level]['Date'] > cur_version:
+        version_info = deepcopy(version[level])
 
-    if not latest:
-        return None, '{0} already latest version'.format(devid)
+    if not version_info:
+        return None, '{0} already latest {1} version'.format(devid, level and 'Important' or '')
 
     if 'Chinese' in language:
         l_lang = 'Chinese'
     else:
         l_lang = 'English'
     l_name = ''.join(('ChangeLog_', l_lang, '.dat'))
-    d_path = os.path.join(settings.UPGRADE_PATH, latest['DevID'], latest['Date'])
+    d_path = os.path.join(settings.UPGRADE_PATH, version_info['DevID'], version_info['Date'])
 
     try:
         with open(os.path.join(d_path, l_name)) as fd:
-            latest['ChangeLog'] = s_encode(s_decode(fd.read()))
+            version_info['ChangeLog'] = s_encode(s_decode(fd.read()))
     except IOError:
         if language == 'Chinese':
-            latest['ChangeLog'] = u'xm_zoomeye_upgradeserver 自动升级'
+            version_info['ChangeLog'] = u'xm_zoomeye_upgradeserver 自动升级'
         else:
-            latest['ChangeLog'] = u'xm_zoomeye_upgradeserver automic upgrade'
+            version_info['ChangeLog'] = u'xm_zoomeye_upgradeserver automic upgrade'
 
-    return latest,
+    return version_info,
 
 
 def get_client_ip(request):

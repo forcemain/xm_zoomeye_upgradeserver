@@ -68,12 +68,20 @@ def find_version(devid, root):
         if version_info[0] is None:
             return version_info
         fname, fsize, flevel = version_info
-        if 'Date' not in latest or d > latest['Date']:
-            latest['DevID'] = devid
-            latest['Date'] = d
-            latest['FileName'] = fname
-            latest['FileSize'] = fsize
-            latest['FileLevel'] = flevel
+        if flevel == 1:
+            if 'Date' not in important or d > important['Date']:
+                important['DevID'] = devid
+                important['Date'] = d
+                important['FileName'] = fname
+                important['FileSize'] = fsize
+                important['FileLevel'] = flevel
+        if flevel == 0:
+            if 'Date' not in latest or d > latest['Date']:
+                latest['DevID'] = devid
+                latest['Date'] = d
+                latest['FileName'] = fname
+                latest['FileSize'] = fsize
+                latest['FileLevel'] = flevel
 
     if 'Date' not in latest and 'Date' not in important:
         return None, '{0} not date found'.format(devid_root)
