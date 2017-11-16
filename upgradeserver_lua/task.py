@@ -173,10 +173,11 @@ def auto_generate_dirs():
         for cf in create_files:
             cf_path = os.path.join(date_dir, cf)
             cf_data = 'automic created'
+            dj_logging('firmware')
             if firmware and cf == 'ChangeLog_Chinese.dat':
-                cf_data = firmware.cn_commit
+                cf_data = firmware[0].cn_commit
             if firmware and cf == 'ChangeLog_English.dat':
-                cf_data = firmware.en_commit
+                cf_data = firmware[0].en_commit
             with open(cf_path, 'w+b') as fd:
                 fd.write(cf_data)
 
