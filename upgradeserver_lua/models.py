@@ -364,7 +364,8 @@ class Firmware(models.Model):
     date = models.DateTimeField(u'上传时间', default=timezone.now, blank=True)
     is_important = models.BooleanField(u'重要版本', default=False, blank=True)
     is_generated = models.BooleanField(u'是否生成', default=False, blank=True)
-
+    cn_commit = models.TextField(u'中文日志', blank=False)
+    en_commit = models.TextField(u'英文日志', blank=False)
     notes = models.TextField(u'附加信息', blank=True)
 
     def __str__(self):

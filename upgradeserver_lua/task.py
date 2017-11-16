@@ -75,6 +75,18 @@ def find_version(devid, root):
                 important['FileName'] = fname
                 important['FileSize'] = fsize
                 important['FileLevel'] = flevel
+
+            """ 兼容设备端BUG, 设备端查询重要更新时从important中查询但升级的时候却再次查询非重要更新latest
+
+            1. 不管是重要更新还是非重要更新都放到latest中
+            """
+            if 'Date' not in latest or d > latest['Date']:
+                latest['DevID'] = devid
+                latest['Date'] = d
+                latest['FileName'] = fname
+                latest['FileSize'] = fsize
+                latest['FileLevel'] = flevel
+
         if flevel == 0:
             if 'Date' not in latest or d > latest['Date']:
                 latest['DevID'] = devid
