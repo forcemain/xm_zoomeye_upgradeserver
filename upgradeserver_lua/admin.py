@@ -44,7 +44,7 @@ class UpgradeLogAdmin(admin.ModelAdmin):
 class FirmwareAdmin(admin.ModelAdmin):
     ordering = ['name']
     list_per_page = 20
-    fields = ['name', 'is_important', 'date', 'notes']
+    fields = ['name', 'is_important', 'date', 'cn_commit', 'en_commit', 'notes']
     search_fields = ['name', 'notes']
     list_display = ['id', 'name', 'is_important', 'is_generated', 'date', 'notes']
 
