@@ -78,7 +78,8 @@ def find_version(devid, root):
 
             """ 兼容设备端BUG, 设备端查询重要更新时从important中查询但升级的时候却再次查询非重要更新latest
 
-            1. 不管是重要更新还是非重要更新都放到latest中
+            1. 不管是重要更新还是非重要更新都放到latest中,但是需要注意重要版本日期必须比非重要版本的高
+            2. 在/firmware调试页面只有level=1的项才会存在important,且其等于latest
             """
             if 'Date' not in latest or d > latest['Date']:
                 latest['DevID'] = devid

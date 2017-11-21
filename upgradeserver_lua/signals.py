@@ -69,7 +69,7 @@ def update_firmware_cache(*args, **kwargs):
 
 
 def recycle_upgradelog(*args, **kwargs):
-    yesterday = timezone.now() - timedelta(days=1)
+    yesterday = timezone.now() - timedelta(days=7)
     UpgradeLog.objects.filter(upgrade_time__lt=yesterday).delete()
 
 
