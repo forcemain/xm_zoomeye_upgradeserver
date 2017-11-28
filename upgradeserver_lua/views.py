@@ -114,12 +114,12 @@ def download(request):
     upgrade_log.save()
 
     f_path = os.path.join(
-        '/download_file/', req_body['DevID'],
+        '/download_file/', devid,
         req_body['Date'], req_body['FileName']
     )
-    dj_logging('download_url ===> {0}'.format(f_path))
     response = HttpResponse()
     response['X-Accel-Redirect'] = f_path
+    
     return response
 
 
