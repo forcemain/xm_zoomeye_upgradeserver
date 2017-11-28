@@ -36,8 +36,7 @@ def uuid2devid(uuid):
         devid = ''.join([uuid[:8], 'X'*11,
                          uuid[19:]])
     else:
-        devid = ''.join([uuid[:8],
-                         uuid[8:13].replace('2', '0').replace('3', '1'), '0'*4,
+        devid = ''.join([uuid[:8], 'X'*5, '0'*4,
                          uuid[17:]])
 
     return uuid, devid
