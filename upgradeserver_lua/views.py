@@ -117,6 +117,7 @@ def download(request):
         '/download_file/', req_body['DevID'],
         req_body['Date'], req_body['FileName']
     )
+    dj_logging('download_url ===> {0}'.format(f_path))
     response = HttpResponse()
     response['X-Accel-Redirect'] = f_path
     return response
