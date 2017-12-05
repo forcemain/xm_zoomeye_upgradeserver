@@ -107,19 +107,21 @@ def find_version(versions, devid, cur_version, level, language):
         return None, '{0} already latest {1} version'.format(devid, level and 'Important' or '')
 
     if 'Chinese' in language:
-        l_lang = 'Chinese'
+        l_lang = ['SimpChinese', 'Chinese']
     else:
-        l_lang = 'English'
-    l_name = ''.join(('ChangeLog_', l_lang, '.dat'))
-    d_path = os.path.join(settings.UPGRADE_PATH, version_info['DevID'], version_info['Date'])
+        l_lang = ['English']
 
+    f_name = None
+    d_path = os.path.join(settings.UPGRADE_PATH, version_info['DevID'], version_info['Date'])
+    for lang in l_lang:
+        l_name = ''.join(('ChangeLog_', lang, '.dat'))
+        f_name = os.path.join(d_path, l_name)
+        if os.path.exists(f_name):
+            break
     try:
-        with open(os.path.join(d_path, l_name)) as fd:
+        with open(f_name) as fd:
             version_info['ChangeLog'] = s_encode(s_decode(fd.read()))
-    except IOError:
-        if language == 'Chinese':
-            version_info['ChangeLog'] = u'xm_zoomeye_upgradeserver 自动升级'
-        else:
+    except (TypeError, IOError):
             version_info['ChangeLog'] = u'xm_zoomeye_upgradeserver automic upgrade'
 
     return version_info,
