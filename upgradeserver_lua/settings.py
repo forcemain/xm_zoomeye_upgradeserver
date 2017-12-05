@@ -170,6 +170,8 @@ LOGGING = {
 
 # Upgrade settings
 # - not used
+SEVVER_HOST = os.getenv('ServerHost', '120.92.92.241')
+SERVER_PORT = os.getenv('ServerPort', 8083)
 VENDOR_NAME = os.getenv('VendorName', None)
 REDIS_CENTER = os.getenv('RedisCenter', None)
 SERVER_AREA = os.getenv('ServerArea', None)

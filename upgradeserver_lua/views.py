@@ -36,7 +36,7 @@ def list(request):
         if version[0] is None:
             dj_logging(version[1])
             return HttpResponse(version[1], status=204)
-        return HttpResponse(json.dumps(version[0]))
+        return HttpResponse(json.dumps(version[0], ensure_ascii=False))
 
     """ 日期控制-> UUID控制-> 区域控制
     
@@ -95,7 +95,7 @@ def list(request):
     if version[0] is None:
         dj_logging(version[1])
         return HttpResponse(version[1], status=204)
-    return HttpResponse(json.dumps(version[0]))
+    return HttpResponse(json.dumps(version[0], ensure_ascii=False))
 
 
 def download(request):
@@ -118,6 +118,7 @@ def download(request):
         req_body['Date'], req_body['FileName']
     )
     response = HttpResponse()
+    response['reserved_cdn_url'] = 'http://{0}:{1}{2}'.format(settings.SERVER_HOST, settings.SERVER_PORT, f_path)
     response['X-Accel-Redirect'] = f_path
     
     return response
@@ -126,28 +127,28 @@ def download(request):
 def firmware_list(request):
     if not settings.VERSIONS_DICT:
         return HttpResponseNotFound('versions not ready')
-    return HttpResponse(json.dumps({'versions': settings.VERSIONS_DICT}))
+    return HttpResponse(json.dumps({'versions': settings.VERSIONS_DICT}, ensure_ascii=False))
 
 
 def area_list(request):
     if not settings.AREASCTL_DICT:
         return HttpResponseNotFound('areas not ready')
-    return HttpResponse(json.dumps({'areas': settings.AREASCTL_DICT.keys()}))
+    return HttpResponse(json.dumps({'areas': settings.AREASCTL_DICT.keys()}, ensure_ascii=False))
 
 
 def uuid_list(request):
     if not settings.UUIDSCTL_DICT:
         return HttpResponseNotFound('uuids not ready')
-    return HttpResponse(json.dumps({'uuids': settings.UUIDSCTL_DICT.keys()}))
+    return HttpResponse(json.dumps({'uuids': settings.UUIDSCTL_DICT.keys()}, ensure_ascii=False))
 
 
 def date_list(request):
     if not settings.DATESCTL_DICT:
         return HttpResponseNotFound('dates not ready')
-    return HttpResponse(json.dumps({'dates': settings.DATESCTL_DICT.keys()}))
+    return HttpResponse(json.dumps({'dates': settings.DATESCTL_DICT.keys()}, ensure_ascii=False))
 
 
 def fdev_list(request):
     if not settings.FIRMWARES_DICT:
         return HttpResponseNotFound('firmwares not ready')
-    return HttpResponse(json.dumps({'firmwares': settings.FIRMWARES_DICT.keys()}))
+    return HttpResponse(json.dumps({'firmwares': settings.FIRMWARES_DICT.keys()}, ensure_ascii=False))
