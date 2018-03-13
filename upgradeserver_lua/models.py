@@ -349,6 +349,7 @@ class DateControl(models.Model, Control):
     end_time = models.DateTimeField(u'结束时间', default=None, null=True, blank=True)
     start_date = models.DateField(u'开始日期', default=None, null=True, blank=True)
     end_date = models.DateField(u'结束日期', default=None, null=True, blank=True)
+    upg_once = models.BooleanField(u'升级一次', default=False, blank=True)
     notes = models.TextField(u'附加信息', default='', blank=True)
 
 

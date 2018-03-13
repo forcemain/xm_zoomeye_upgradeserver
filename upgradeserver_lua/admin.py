@@ -29,8 +29,8 @@ class DateControlAdmin(admin.ModelAdmin):
     ordering = ['devid']
     list_per_page = 20
     search_fields = ['devid', 'notes']
-    fields = ['devid', 'start_time', 'end_time', 'start_date', 'end_date', 'notes']
-    list_display = ['id', 'devid', 'is_expired', 'start_time', 'end_time', 'start_date', 'end_date', 'notes']
+    fields = ['devid', 'start_time', 'end_time', 'start_date', 'end_date', 'upg_once', 'notes']
+    list_display = ['id', 'devid', 'is_expired', 'start_time', 'end_time', 'start_date', 'end_date', 'upg_once', 'notes']
 
 
 class UpgradeLogAdmin(admin.ModelAdmin):

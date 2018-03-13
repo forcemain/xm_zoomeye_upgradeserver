@@ -6,14 +6,20 @@
 
 
 import os
+import sys
 import json
-import sys;
-reload(sys);
+
+
+reload(sys)
 sys.setdefaultencoding('utf8')
-from .geoip import g_ip
-from .models import UpgradeLog
+
+
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
+
+
+from .geoip import g_ip
+from .models import UpgradeLog
 from .utils import (analysis_list_body, analysis_download_body, find_version, get_client_ip,
                     area_can, uuid_can, date_can, dj_logging, get_extend_id)
 

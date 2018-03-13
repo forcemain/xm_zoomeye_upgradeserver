@@ -192,6 +192,10 @@ def date_can(devid, curversion):
     if (devid_val['start_date'] and curversion < devid_val['start_date'].strftime('%Y-%m-%d')) or \
        (devid_val['end_date'] and curversion > devid_val['end_date'].strftime('%Y-%m-%d')):
         return False, 1
+    if devid_val['upg_once']:
+        if devid in devid_val['upg_list']:
+            return False, 1
+        devid_val['upg_list'].append(devid)
     return True, 1
 
 

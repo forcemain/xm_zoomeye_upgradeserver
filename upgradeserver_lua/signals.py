@@ -50,7 +50,9 @@ def update_date_cache(*args, **kwargs):
                 'end_time': item['end_time'],
                 'start_date': item['start_date'],
                 'end_date': item['end_date'],
-                'notes': item['notes']
+                'upg_once': item['upg_once'],
+                'notes': item['notes'],
+                'upg_list': settings.DATESCTL_DICT.get(item['devid'], {}).get('upg_list', [])
             }
         })
 
