@@ -75,7 +75,7 @@ def list(request):
     3.1.2.2.2. no, 200
   
     """
-    date_can_res, date_can_type = date_can(devid, req_body['CurVersion'])
+    date_can_res, date_can_type = date_can(req_body['UUID'], devid, req_body['CurVersion'])
     if not date_can_res:
         msg = '{0} datecontrol not allowed'.format(devid)
         dj_logging(msg)
@@ -114,6 +114,12 @@ def download(request):
     # 记录下载固件记录(但并不保证下载成功)
     extend_id = get_extend_id(req_body['DevID'], settings.IDMAPS_DICT)
     devid = extend_id[0]
+    # 记录下载固件次数(但并不保证下载成功)
+    if devid in settings.DATESCTL_DICT:
+        devid_val = settings.DATESCTL_DICT[devid]
+        if devid_val['upg_once'] and (req_body['DevID'] not in devid_val['upg_list']):
+            devid_val['upg_list'].append(req_body['DevID'])
+
     clientip = get_client_ip(request)
     area = g_ip.city(clientip)
     upgrade_log = UpgradeLog(uuid=req_body['UUID'], devid=devid, area=area or 'Unrecognized')

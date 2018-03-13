@@ -179,7 +179,7 @@ def uuid_can(uuid, devid):
         return False, 1
 
 
-def date_can(devid, curversion):
+def date_can(uuid, devid, curversion):
     if not settings.DATESCTL_DICT:
         return True, 0
     if devid not in settings.DATESCTL_DICT:
@@ -193,9 +193,8 @@ def date_can(devid, curversion):
        (devid_val['end_date'] and curversion > devid_val['end_date'].strftime('%Y-%m-%d')):
         return False, 1
     if devid_val['upg_once']:
-        if devid in devid_val['upg_list']:
+        if uuid in devid_val['upg_list']:
             return False, 1
-        devid_val['upg_list'].append(devid)
     return True, 1
 
 
