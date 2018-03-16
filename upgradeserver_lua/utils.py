@@ -192,6 +192,7 @@ def date_can(uuid, devid, curversion):
     if (devid_val['start_date'] and curversion < devid_val['start_date'].strftime('%Y-%m-%d')) or \
        (devid_val['end_date'] and curversion > devid_val['end_date'].strftime('%Y-%m-%d')):
         return False, 1
+    dj_logging('upg_once => {0}'.format(settings.DATESCTL_DICT))
     if devid_val['upg_once']:
         if uuid in devid_val['upg_list']:
             return False, 1

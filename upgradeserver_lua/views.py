@@ -118,7 +118,7 @@ def download(request):
     if devid in settings.DATESCTL_DICT:
         devid_val = settings.DATESCTL_DICT[devid]
         if devid_val['upg_once'] and (req_body['DevID'] not in devid_val['upg_list']):
-            devid_val['upg_list'].append(req_body['DevID'])
+            devid_val['upg_list'].append(req_body['UUID'])
 
     clientip = get_client_ip(request)
     area = g_ip.city(clientip)
@@ -157,9 +157,7 @@ def uuid_list(request):
 def date_list(request):
     if not settings.DATESCTL_DICT:
         return HttpResponseNotFound('dates not ready')
-    # return HttpResponse(json.dumps({'dates': settings.DATESCTL_DICT.keys()}, ensure_ascii=False))
-    return HttpResponse(json.dumps({'dates': settings.DATESCTL_DICT}, ensure_ascii=False))
-
+    return HttpResponse(json.dumps({'dates': settings.DATESCTL_DICT.keys()}, ensure_ascii=False))
 
 def fdev_list(request):
     if not settings.FIRMWARES_DICT:
