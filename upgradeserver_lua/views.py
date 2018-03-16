@@ -157,7 +157,8 @@ def uuid_list(request):
 def date_list(request):
     if not settings.DATESCTL_DICT:
         return HttpResponseNotFound('dates not ready')
-    return HttpResponse(json.dumps({'dates': settings.DATESCTL_DICT.keys()}, ensure_ascii=False))
+    # return HttpResponse(json.dumps({'dates': settings.DATESCTL_DICT.keys()}, ensure_ascii=False))
+    return HttpResponse(json.dumps({'dates': settings.DATESCTL_DICT}, ensure_ascii=False))
 
 
 def fdev_list(request):
