@@ -10,6 +10,7 @@ import os
 import sys
 import json
 import chardet
+import datetime
 from copy import deepcopy
 from django.conf import settings
 from django.utils import timezone
@@ -102,7 +103,7 @@ def find_version(versions, devid, cur_version, level, language):
 
     rds_key = 'upg::datecontrol::{0}'.format(devid)
     rds_val = settings.REDIS_CONN.hgetall(rds_key)
-    if rds_val and rds_val['upg_once']:
+    if rds_val and rds_val['upg_once'] == 'True':
         if version[level]:
             version_info = deepcopy(version[level])
     else:
@@ -191,13 +192,15 @@ def date_can(uuid, devid, curversion):
     if not rds_val:
         return True, 0
     time = timezone.now()
-    if (rds_val['start_time'] and time < rds_val['start_time']) or \
-       (rds_val['end_time'] and time > rds_val['end_time']):
+    start_time = datetime.datetime.strptime(rds_val['start_time'], '%Y-%m-%d %H:%M:%S')
+    end_time = datetime.datetime.strptime(rds_val['end_time'], '%Y-%m-%d %H:%M:%S')
+    if (start_time and time < start_time) or \
+       (end_time and time > end_time):
         return False, 1
     if (rds_val['start_date'] and curversion < rds_val['start_date'].strftime('%Y-%m-%d')) or \
        (rds_val['end_date'] and curversion > rds_val['end_date'].strftime('%Y-%m-%d')):
         return False, 1
-    if rds_val['upg_once']:
+    if rds_val['upg_once'] == 'True':
         rds_key = 'upg::datecontrol::{0}::{1}::upgraded'.format(devid, uuid)
         if settings.REDIS_CONN.exists(rds_key):
             return False, 1
