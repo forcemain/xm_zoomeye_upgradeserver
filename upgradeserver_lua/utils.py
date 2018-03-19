@@ -197,8 +197,8 @@ def date_can(uuid, devid, curversion):
     if (start_time and time < start_time) or \
        (end_time and time > end_time):
         return False, 1
-    if (rds_val['start_date'] and curversion < rds_val['start_date'].strftime('%Y-%m-%d')) or \
-       (rds_val['end_date'] and curversion > rds_val['end_date'].strftime('%Y-%m-%d')):
+    if (rds_val['start_date'] and curversion < rds_val['start_date']) or \
+       (rds_val['end_date'] and curversion > rds_val['end_date']):
         return False, 1
     if rds_val['upg_once'] == 'True':
         rds_key = 'upg::datecontrol::{0}::{1}::upgraded'.format(devid, uuid)
