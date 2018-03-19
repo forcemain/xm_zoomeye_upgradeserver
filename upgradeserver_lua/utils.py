@@ -101,7 +101,7 @@ def find_version(versions, devid, cur_version, level, language):
         return None, '{0} not in versions'.format(devid_key)
 
     rds_key = 'upg::datecontrol::{0}'.format(devid)
-    rds_val = settings.REDIS_CONN.hmget(rds_key)
+    rds_val = settings.REDIS_CONN.hgetall(rds_key)
     if rds_val['upg_once']:
         if version[level]:
             version_info = deepcopy(version[level])
@@ -187,7 +187,7 @@ def uuid_can(uuid, devid):
 
 def date_can(uuid, devid, curversion):
     rds_key = 'upg::datecontrol::{0}'.format(devid)
-    rds_val = settings.REDIS_CONN.hmget(rds_key)
+    rds_val = settings.REDIS_CONN.hgetall(rds_key)
     if not rds_val:
         return True, 0
     time = timezone.now()

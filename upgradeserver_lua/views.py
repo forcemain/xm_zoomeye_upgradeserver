@@ -116,7 +116,7 @@ def download(request):
     devid = extend_id[0]
     # 记录下载固件次数(但并不保证下载成功)
     rds_key = 'upg::datecontrol::{0}'.format(devid)
-    rds_val = settings.REDIS_CONN.hmget(rds_key)
+    rds_val = settings.REDIS_CONN.hgetall(rds_key)
     if rds_val and rds_val['upg_once']:
         rds_key = 'upg::datecontrol::{0}::{1}::upgraded'.format(devid, req_body['UUID'])
         settings.REDIS_CONN.set(rds_key, 1)
