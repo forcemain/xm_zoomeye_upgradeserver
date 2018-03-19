@@ -100,8 +100,14 @@ def find_version(versions, devid, cur_version, level, language):
     if version is None:
         return None, '{0} not in versions'.format(devid_key)
 
-    if version[level] and version[level]['Date'] > cur_version:
-        version_info = deepcopy(version[level])
+    rds_key = 'upg::datecontrol::{0}'.format(devid)
+    rds_val = settings.REDIS_CONN.hmget(rds_key)
+    if rds_val['upg_once']:
+        if version[level]:
+            version_info = deepcopy(version[level])
+    else:
+        if version[level] and version[level]['Date'] > cur_version:
+            version_info = deepcopy(version[level])
 
     if not version_info:
         return None, '{0} already latest {1} version'.format(devid, level and 'Important' or '')
@@ -180,21 +186,20 @@ def uuid_can(uuid, devid):
 
 
 def date_can(uuid, devid, curversion):
-    if not settings.DATESCTL_DICT:
+    rds_key = 'upg::datecontrol::{0}'.format(devid)
+    rds_val = settings.REDIS_CONN.hmget(rds_key)
+    if not rds_val:
         return True, 0
-    if devid not in settings.DATESCTL_DICT:
-        return True, 0
-    devid_val = settings.DATESCTL_DICT[devid]
     time = timezone.now()
-    if (devid_val['start_time'] and time < devid_val['start_time']) or \
-       (devid_val['end_time'] and time > devid_val['end_time']):
+    if (rds_val['start_time'] and time < rds_val['start_time']) or \
+       (rds_val['end_time'] and time > rds_val['end_time']):
         return False, 1
-    if (devid_val['start_date'] and curversion < devid_val['start_date'].strftime('%Y-%m-%d')) or \
-       (devid_val['end_date'] and curversion > devid_val['end_date'].strftime('%Y-%m-%d')):
+    if (rds_val['start_date'] and curversion < rds_val['start_date'].strftime('%Y-%m-%d')) or \
+       (rds_val['end_date'] and curversion > rds_val['end_date'].strftime('%Y-%m-%d')):
         return False, 1
-    dj_logging('upg_once => {0}'.format(settings.DATESCTL_DICT))
-    if devid_val['upg_once']:
-        if uuid in devid_val['upg_list']:
+    if rds_val['upg_once']:
+        rds_key = 'upg::datecontrol::{0}::{1}::upgraded'.format(devid, uuid)
+        if settings.REDIS_CONN.exists(rds_key):
             return False, 1
     return True, 1
 

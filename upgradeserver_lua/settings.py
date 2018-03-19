@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import logging
 
+
+from redis import StrictRedis
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -170,10 +174,13 @@ LOGGING = {
 
 # Upgrade settings
 # - not used
+REDIS_HOST = os.getenv('RedisHOST', '120.92.92.241')
+REDIS_PORT = os.getenv('RedisPort', 5128)
+REDIS_PASS = os.getenv('RedisPass', '6JgRU4HguRzyVai5vgEVax6vmyvAsnX7')
+REDIS_CONN = StrictRedis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASS, max_connections=32)
 SERVER_HOST = os.getenv('ServerHost', '120.92.92.241')
 SERVER_PORT = os.getenv('ServerPort', 8083)
 VENDOR_NAME = os.getenv('VendorName', None)
-REDIS_CENTER = os.getenv('RedisCenter', None)
 SERVER_AREA = os.getenv('ServerArea', None)
 # - used
 UPGRADE_PATH = os.path.join(BASE_DIR, 'upgradeserver_lua', 'upgrade_files')

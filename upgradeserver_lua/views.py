@@ -115,10 +115,11 @@ def download(request):
     extend_id = get_extend_id(req_body['DevID'], settings.IDMAPS_DICT)
     devid = extend_id[0]
     # 记录下载固件次数(但并不保证下载成功)
-    if devid in settings.DATESCTL_DICT:
-        devid_val = settings.DATESCTL_DICT[devid]
-        if devid_val['upg_once'] and (req_body['DevID'] not in devid_val['upg_list']):
-            devid_val['upg_list'].append(req_body['UUID'])
+    rds_key = 'upg::datecontrol::{0}'.format(devid)
+    rds_val = settings.REDIS_CONN.hmget(rds_key)
+    if rds_val and rds_val['upg_once']:
+        rds_key = 'upg::datecontrol::{0}::{1}::upgraded'.format(devid, req_body['UUID'])
+        settings.REDIS_CONN.set(rds_key, 1)
 
     clientip = get_client_ip(request)
     area = g_ip.city(clientip)

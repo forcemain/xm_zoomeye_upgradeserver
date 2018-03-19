@@ -43,17 +43,14 @@ def update_uuid_cache(*args, **kwargs):
 def update_date_cache(*args, **kwargs):
     settings.DATESCTL_DICT.clear()
     for item in DateControl.objects.values():
-        settings.DATESCTL_DICT.setdefault(item['devid'], {})
-        settings.DATESCTL_DICT.update({
-            item['devid']: {
-                'start_time': item['start_time'],
-                'end_time': item['end_time'],
-                'start_date': item['start_date'],
-                'end_date': item['end_date'],
-                'upg_once': item['upg_once'],
-                'notes': item['notes'],
-                'upg_list': settings.DATESCTL_DICT.get(item['devid'], {}).get('upg_list', [])
-            }
+        rds_key = 'upg::datecontrol::{0}'.format(item['devid'])
+        settings.REDIS_CONN.hmset(rds_key, {
+            'start_time': item['start_time'],
+            'end_time': item['end_time'],
+            'start_date': item['start_date'],
+            'end_date': item['end_date'],
+            'upg_once': item['upg_once'],
+            'notes': item['notes']
         })
 
 
