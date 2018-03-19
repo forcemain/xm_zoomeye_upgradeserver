@@ -43,3 +43,6 @@ gunicorn == 19.7.1
 
 # gevent
 gevent == 1.2.2
+
+# redis
+redis == 2.10.6

@@ -160,6 +160,7 @@ def date_list(request):
         return HttpResponseNotFound('dates not ready')
     return HttpResponse(json.dumps({'dates': settings.DATESCTL_DICT.keys()}, ensure_ascii=False))
 
+
 def fdev_list(request):
     if not settings.FIRMWARES_DICT:
         return HttpResponseNotFound('firmwares not ready')
