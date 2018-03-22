@@ -104,8 +104,10 @@ def find_version(versions, devid, cur_version, level, language):
     rds_key = 'upg::datecontrol::{0}'.format(devid)
     rds_val = settings.REDIS_CONN.hgetall(rds_key)
     if rds_val and rds_val['upg_once'] == 'True':
-        if version[level]:
-            version_info = deepcopy(version[level])
+        if version[1]:
+            version_info = deepcopy(version[1])
+        else:
+            version_info = deepcopy(version[0])
     else:
         if version[level] and version[level]['Date'] > cur_version:
             version_info = deepcopy(version[level])
