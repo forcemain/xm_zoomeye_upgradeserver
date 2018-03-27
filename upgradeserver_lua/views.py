@@ -38,7 +38,7 @@ def list(request):
     devid = extend_id[0]
     clientip = get_client_ip(request)
     rds_key = 'upg::polling::{0}'.format(devid)
-    settings.REDIS_CONN.hset(rds_key, {
+    settings.REDIS_CONN.hmset(rds_key, {
         'wlanip': clientip,
         'latest': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     })
