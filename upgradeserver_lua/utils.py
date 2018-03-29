@@ -189,6 +189,16 @@ def uuid_can(uuid, devid):
 
 
 def date_can(uuid, devid, curversion):
+    # for logging different model number
+    # ==================================
+    if '2017-08-02' < curversion < '2018-03-05':
+        rds_key = 'upg::polling::{0}'.format(devid)
+        if settings.REDIS_CONN.exists(rds_key):
+            settings.REDIS_CONN.incr(rds_key)
+        else:
+            settings.REDIS_CONN.set(rds_key, 0)
+    # ==================================
+
     rds_key = 'upg::datecontrol::{0}'.format(devid)
     rds_val = settings.REDIS_CONN.hgetall(rds_key)
     if not rds_val:
@@ -212,5 +222,3 @@ def date_can(uuid, devid, curversion):
 def dj_logging(msg):
     log = '=> upgradeserver_lua: {0}{1}'.format(msg, os.linesep)
     sys.stderr.write(log)
-
-

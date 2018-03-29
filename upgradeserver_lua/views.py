@@ -37,11 +37,6 @@ def list(request):
         return HttpResponseBadRequest(extend_id[1])
     devid = extend_id[0]
     clientip = get_client_ip(request)
-    rds_key = 'upg::polling::{0}'.format(devid)
-    settings.REDIS_CONN.hmset(rds_key, {
-        'wlanip': clientip,
-        'latest': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    })
     if clientip is None:
         level = 1 if req_body['Expect'] == 'Important' else 0
         version = find_version(settings.VERSIONS_DICT, devid, req_body['CurVersion'], level, req_body['Language'])
